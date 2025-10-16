@@ -52,4 +52,5 @@ public class Turno implements Serializable {
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+    private Boolean activo;
 }

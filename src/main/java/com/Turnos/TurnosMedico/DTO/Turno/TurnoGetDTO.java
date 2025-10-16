@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.DTO.Turno;
 
+import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadGetDTO;
 import com.Turnos.TurnosMedico.DTO.Paciente.PacienteGetDTO;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalGetDTO;
 import com.Turnos.TurnosMedico.Util.EstadoTurno;
@@ -14,11 +15,12 @@ import java.time.LocalDateTime;
 @Setter
 public class TurnoGetDTO {
     private Integer id;
+
     private PacienteGetDTO paciente;
 
     private ProfesionalGetDTO profesional;
 
-    private Especialidad especialidad;
+    private EspecialidadGetDTO especialidad;
 
     private LocalDateTime fechaHora;
 
@@ -31,4 +33,5 @@ public class TurnoGetDTO {
     private LocalDateTime fechaCreacion;
 
     private LocalDateTime fechaActualizacion;
+    private Boolean activo;
 }

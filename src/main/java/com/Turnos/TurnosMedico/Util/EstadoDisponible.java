@@ -1,6 +1,6 @@
 package com.Turnos.TurnosMedico.Util;
 
-public enum Disponibilidad {
+public enum EstadoDisponible {
     DISPONIBLE,
     VACACIONES,
     LICENCIA

@@ -21,7 +21,6 @@ public class Consultorio implements Serializable {
 
     @Column(nullable = false)
     private String numero;
-
     private String descripcion;
     private String piso;
     private Boolean activo;
