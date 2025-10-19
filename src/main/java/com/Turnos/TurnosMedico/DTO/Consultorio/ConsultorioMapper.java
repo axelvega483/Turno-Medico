@@ -8,10 +8,10 @@ public class ConsultorioMapper {
     public ConsultorioGetDTO toDTO(Consultorio consultorio) {
         ConsultorioGetDTO dto = new ConsultorioGetDTO();
         dto.setId(consultorio.getId());
+        dto.setDescripcion(consultorio.getDescripcion());
         dto.setPiso(consultorio.getPiso());
-        dto.setActivo(consultorio.getActivo());
         dto.setNumero(consultorio.getNumero());
-        dto.setDescripcion(dto.getDescripcion());
+        dto.setActivo(consultorio.getActivo());
         return dto;
     }
 }
