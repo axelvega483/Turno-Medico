@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Getter
@@ -49,6 +50,13 @@ public class Turno implements Serializable {
 
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
+
+    @ManyToOne
+    @JoinColumn(name = "consultorio_id", nullable = false)
+    private Consultorio consultorio;
+
+    @Column(name = "duracion", nullable = false)
+    private Duration duracion = Duration.ofMinutes(30);
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;

@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.model;
 
+import com.Turnos.TurnosMedico.Util.TipoPaciente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,10 @@ public class Paciente implements Serializable {
     private String email;
     private String direccion;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoPaciente tipoPaciente;
+
     @ManyToOne
     @JoinColumn(name = "obra_social_id")
     private ObraSocial obraSocial;
@@ -54,4 +59,11 @@ public class Paciente implements Serializable {
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Turno> turnos = new ArrayList<>();
+
+    @PrePersist
+    public void prePersist() {
+        this.fechaRegistro = LocalDateTime.now();
+        this.activo = true;
+    }
+
 }

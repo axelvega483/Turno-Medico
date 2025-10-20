@@ -5,11 +5,12 @@ import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadPostDTO;
 import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadUpdateDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IEspecialidad {
     EspecialidadGetDTO create(EspecialidadPostDTO post);
 
-    EspecialidadGetDTO findById(Integer id);
+    Optional<EspecialidadGetDTO> findById(Integer id);
 
     List<EspecialidadGetDTO> findAll();
 

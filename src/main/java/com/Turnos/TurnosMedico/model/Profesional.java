@@ -59,11 +59,11 @@ public class Profesional implements Serializable {
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
     private List<Turno> turnos = new ArrayList<>();
 
-    public boolean estaDisponible(LocalDateTime fechaHora, Consultorio consultorio) {
+    public boolean estaDisponible(LocalDateTime fechaHora) {
         return disponibilidades.stream()
-                .anyMatch(disp -> disp.getConsultorio().equals(consultorio) &&
-                        disp.estaDisponible(fechaHora));
+                .anyMatch(d -> d.estaDisponible(fechaHora));
     }
+
 
     public List<Disponibilidad> getDisponibilidadesPorDia(Dia dia) {
         return disponibilidades.stream()
@@ -73,10 +73,14 @@ public class Profesional implements Serializable {
 
     public void agregarDisponibilidad(Consultorio consultorio, Dia dia,
                                       LocalTime inicio, LocalTime fin) {
-        Disponibilidad nuevaDisp = new Disponibilidad(
-                consultorio, dia, inicio, fin
-        );
-        this.disponibilidades.add(nuevaDisp);
+        boolean solapa = disponibilidades.stream()
+                .anyMatch(d -> d.getDia() == dia &&
+                        d.getConsultorio().equals(consultorio) &&
+                        !(fin.isBefore(d.getHorarioInicio()) || inicio.isAfter(d.getHorarioFin())));
+        if (solapa) {
+            throw new IllegalArgumentException("El horario se solapa con una disponibilidad existente");
+        }
+        disponibilidades.add(new Disponibilidad(consultorio, dia, inicio, fin));
     }
 
     public void removerDisponibilidad(Consultorio consultorio, Dia dia) {
