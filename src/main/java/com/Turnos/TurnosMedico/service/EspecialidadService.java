@@ -44,6 +44,7 @@ public class EspecialidadService implements IEspecialidad {
         Especialidad especialidad = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrado"));
         mapper.updateEntityFromDTO(update, especialidad);
+        especialidad.setActivo(true);
         repo.save(especialidad);
         return mapper.toDTO(especialidad);
     }

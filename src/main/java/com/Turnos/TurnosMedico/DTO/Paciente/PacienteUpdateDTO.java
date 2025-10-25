@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.DTO.Paciente;
 
+import com.Turnos.TurnosMedico.Util.TipoPaciente;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,20 +14,19 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteUpdateDTO {
-    @NotBlank(message = "El DNI es obligatorio")
+
     @Pattern(regexp = "^[0-9]{7,8}$", message = "El DNI debe contener 7 u 8 dígitos")
     private String dni;
 
-    @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     private String nombre;
 
-    @NotBlank(message = "El apellido es obligatorio")
+
     @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
     private String apellido;
 
     @Past(message = "La fecha de nacimiento debe ser en el pasado")
-    @NotNull(message = "La fecha de nacimiento es obligatoria")
+
     private LocalDate fechaNacimiento;
 
     @Pattern(regexp = "^(MASCULINO|FEMENINO|OTRO)$", message = "El género debe ser MASCULINO, FEMENINO u OTRO")
@@ -47,6 +47,5 @@ public class PacienteUpdateDTO {
     @Size(max = 50, message = "El número de afiliado no puede exceder los 50 caracteres")
     private String numeroAfiliado;
 
-    @NotNull(message = "El estado activo es obligatorio")
-    private Boolean activo;
+    private TipoPaciente tipoPaciente;
 }

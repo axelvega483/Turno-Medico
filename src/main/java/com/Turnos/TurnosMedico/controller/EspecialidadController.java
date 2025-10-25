@@ -1,8 +1,5 @@
 package com.Turnos.TurnosMedico.controller;
 
-import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioGetDTO;
-import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioPostDTO;
-import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioUpdateDTO;
 import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadGetDTO;
 import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadPostDTO;
 import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadUpdateDTO;

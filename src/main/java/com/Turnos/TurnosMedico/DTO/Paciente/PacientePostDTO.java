@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.DTO.Paciente;
 
+import com.Turnos.TurnosMedico.Util.TipoPaciente;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,5 +48,6 @@ public class PacientePostDTO {
     @Size(max = 50, message = "El número de afiliado no puede exceder los 50 caracteres")
     private String numeroAfiliado;
 
-    private Boolean activo = true;
+    private TipoPaciente tipoPaciente;
+
 }

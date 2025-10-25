@@ -33,9 +33,6 @@ public class EspecialidadMapper {
         if (updateDTO.getDescripcion() != null) {
             especialidad.setDescripcion(updateDTO.getDescripcion());
         }
-        if (updateDTO.getActivo() != null) {
-            especialidad.setActivo(updateDTO.getActivo());
-        }
         return especialidad;
     }
 

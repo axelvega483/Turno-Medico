@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.DTO.Profesional;
 
+import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadGetDTO;
 import com.Turnos.TurnosMedico.Util.EstadoDisponible;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

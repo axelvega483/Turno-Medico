@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ObraSocialUpdateDTO {
-    @NotBlank(message = "El nombre de la obra social es obligatorio")
+
     @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     private String nombre;
 
@@ -25,6 +25,5 @@ public class ObraSocialUpdateDTO {
     @Size(max = 100, message = "El email no puede exceder los 100 caracteres")
     private String email;
 
-    @NotNull(message = "El estado activo es obligatorio")
-    private Boolean activo;
+
 }
