@@ -46,7 +46,8 @@ public class Profesional implements Serializable {
     private String telefono;
     private String email;
 
-    private Boolean activo;
+    @Column(name = "activo")
+    private boolean activo = true;
 
     @ElementCollection
     @CollectionTable(

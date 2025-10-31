@@ -31,7 +31,7 @@ public class ObraSocialService implements IObraSocial {
 
     @Override
     public Optional<ObraSocialGetDTO> findById(Integer id) {
-        return repo.findById(id).filter(ObraSocial::getActivo).map(mapper::toDTO);
+        return repo.findById(id).filter(ObraSocial::isActivo).map(mapper::toDTO);
     }
 
     @Override

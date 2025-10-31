@@ -46,7 +46,7 @@ public class ProfesionalService implements IProfesional {
 
     @Override
     public Optional<ProfesionalGetDTO> findById(Integer id) {
-        return repo.findById(id).filter(Profesional::getActivo).map(mapper::toDTO);
+        return repo.findById(id).filter(Profesional::isActivo).map(mapper::toDTO);
     }
 
     @Override

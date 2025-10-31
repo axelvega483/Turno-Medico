@@ -11,5 +11,5 @@ public class ObraSocialGetDTO {
     private String codigo;
     private String telefono;
     private String email;
-    private Boolean activo;
+    private boolean activo;
 }

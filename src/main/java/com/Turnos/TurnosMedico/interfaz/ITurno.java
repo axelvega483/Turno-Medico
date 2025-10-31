@@ -5,11 +5,12 @@ import com.Turnos.TurnosMedico.DTO.Turno.TurnoPostDTO;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoUpdateDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ITurno {
     TurnoGetDTO create(TurnoPostDTO post);
 
-    TurnoGetDTO findById(Integer id);
+    Optional<TurnoGetDTO> findById(Integer id);
 
     List<TurnoGetDTO> findAll();
 

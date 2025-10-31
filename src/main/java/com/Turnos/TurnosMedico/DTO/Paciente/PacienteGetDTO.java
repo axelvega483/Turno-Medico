@@ -22,6 +22,6 @@ public class PacienteGetDTO {
     private ObraSocialGetDTO obraSocial;
     private String numeroAfiliado;
     private LocalDateTime fechaRegistro;
-    private Boolean activo;
+    private boolean activo;
 
 }

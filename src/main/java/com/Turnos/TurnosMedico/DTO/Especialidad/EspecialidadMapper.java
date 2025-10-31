@@ -12,7 +12,7 @@ public class EspecialidadMapper {
     public EspecialidadGetDTO toDTO(Especialidad especialidad) {
         EspecialidadGetDTO dto = new EspecialidadGetDTO();
         dto.setId(especialidad.getId());
-        dto.setActivo(especialidad.getActivo());
+        dto.setActivo(especialidad.isActivo());
         dto.setDescripcion(especialidad.getDescripcion());
         dto.setNombre(especialidad.getNombre());
         return dto;
@@ -37,6 +37,6 @@ public class EspecialidadMapper {
     }
 
     public List<EspecialidadGetDTO> toDTOList(List<Especialidad> especialidades) {
-        return especialidades.stream().filter(Especialidad::getActivo).map(this::toDTO).toList();
+        return especialidades.stream().filter(Especialidad::isActivo).map(this::toDTO).toList();
     }
 }

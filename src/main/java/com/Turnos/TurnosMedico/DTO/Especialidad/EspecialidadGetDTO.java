@@ -12,5 +12,5 @@ public class EspecialidadGetDTO {
 
     private String descripcion;
 
-    private Boolean activo;
+    private boolean activo;
 }

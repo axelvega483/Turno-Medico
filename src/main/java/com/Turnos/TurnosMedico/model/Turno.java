@@ -46,8 +46,6 @@ public class Turno implements Serializable {
     @Column(name = "tipo_consulta")
     private TipoConsulta tipoConsulta;
 
-    private String observaciones;
-
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
@@ -60,5 +58,7 @@ public class Turno implements Serializable {
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
-    private Boolean activo;
+
+    @Column(name = "activo")
+    private boolean activo = true;
 }

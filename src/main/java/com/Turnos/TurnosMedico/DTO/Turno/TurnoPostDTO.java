@@ -1,5 +1,7 @@
 package com.Turnos.TurnosMedico.DTO.Turno;
 
+import com.Turnos.TurnosMedico.DTO.Paciente.PacientePostDTO;
+import com.Turnos.TurnosMedico.Util.EstadoTurno;
 import com.Turnos.TurnosMedico.Util.TipoConsulta;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TurnoPostDTO {
     @NotNull(message = "El ID del paciente es obligatorio")
-    private Integer pacienteId;
+    private PacientePostDTO paciente;
 
     @NotNull(message = "El ID del profesional es obligatorio")
     private Integer profesionalId;
@@ -32,6 +34,9 @@ public class TurnoPostDTO {
     @NotNull(message = "El tipo de consulta es obligatorio")
     private TipoConsulta tipoConsulta;
 
-    @Size(max = 500, message = "Las observaciones no pueden exceder los 500 caracteres")
-    private String observaciones;
+    @NotNull(message = "El estado del turno es obligatorio")
+    private EstadoTurno estado;
+
+    @NotNull(message = "El ID del consultorio es obligatorio")
+    private Integer consultorioId;
 }

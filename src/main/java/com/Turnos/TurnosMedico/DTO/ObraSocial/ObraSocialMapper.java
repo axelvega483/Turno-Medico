@@ -10,7 +10,7 @@ public class ObraSocialMapper {
     public ObraSocialGetDTO toDTO(ObraSocial obraSocial) {
         ObraSocialGetDTO dto = new ObraSocialGetDTO();
         dto.setId(obraSocial.getId());
-        dto.setActivo(obraSocial.getActivo());
+        dto.setActivo(obraSocial.isActivo());
         dto.setCodigo(obraSocial.getCodigo());
         dto.setNombre(obraSocial.getNombre());
         dto.setEmail(obraSocial.getEmail());
@@ -45,6 +45,6 @@ public class ObraSocialMapper {
     }
 
     public List<ObraSocialGetDTO> toDTOList(List<ObraSocial> obraSocials) {
-        return obraSocials.stream().filter(ObraSocial::getActivo).map(this::toDTO).toList();
+        return obraSocials.stream().filter(ObraSocial::isActivo).map(this::toDTO).toList();
     }
 }

@@ -22,8 +22,15 @@ public class ObraSocial implements Serializable {
     @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false, unique = true)
     private String codigo;
+
+    @Column(nullable = false)
     private String telefono;
+
+    @Column(nullable = false)
     private String email;
-    private Boolean activo;
+
+    @Column(name = "activo")
+    private boolean activo = true;
 }

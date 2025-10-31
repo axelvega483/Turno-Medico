@@ -21,7 +21,13 @@ public class Consultorio implements Serializable {
 
     @Column(nullable = false)
     private String numero;
+
+    @Column(nullable = false)
     private String descripcion;
+
+    @Column(nullable = false)
     private String piso;
-    private Boolean activo;
+
+    @Column(name = "activo")
+    private boolean activo = true;
 }

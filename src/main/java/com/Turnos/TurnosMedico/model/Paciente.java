@@ -55,7 +55,8 @@ public class Paciente implements Serializable {
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro;
 
-    private Boolean activo;
+    @Column(name = "activo")
+    private boolean activo = true;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Turno> turnos = new ArrayList<>();

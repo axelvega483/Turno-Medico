@@ -24,6 +24,7 @@ public class Especialidad implements Serializable {
 
     private String descripcion;
 
-    private Boolean activo;
+    @Column(name = "activo")
+    private boolean activo = true;
 
 }

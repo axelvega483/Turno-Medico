@@ -31,7 +31,7 @@ public class EspecialidadService implements IEspecialidad {
 
     @Override
     public Optional<EspecialidadGetDTO> findById(Integer id) {
-        return repo.findById(id).filter(Especialidad::getActivo).map(mapper::toDTO);
+        return repo.findById(id).filter(Especialidad::isActivo).map(mapper::toDTO);
     }
 
     @Override

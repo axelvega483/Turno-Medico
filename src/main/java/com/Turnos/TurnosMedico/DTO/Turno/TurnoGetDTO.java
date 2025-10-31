@@ -5,7 +5,6 @@ import com.Turnos.TurnosMedico.DTO.Paciente.PacienteGetDTO;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalGetDTO;
 import com.Turnos.TurnosMedico.Util.EstadoTurno;
 import com.Turnos.TurnosMedico.Util.TipoConsulta;
-import com.Turnos.TurnosMedico.model.Especialidad;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,5 +32,6 @@ public class TurnoGetDTO {
     private LocalDateTime fechaCreacion;
 
     private LocalDateTime fechaActualizacion;
-    private Boolean activo;
+
+    private boolean activo;
 }

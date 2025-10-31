@@ -17,7 +17,7 @@ public class PacienteMapper {
         PacienteGetDTO dto = new PacienteGetDTO();
         dto.setId(paciente.getId());
         dto.setDni(paciente.getDni());
-        dto.setActivo(paciente.getActivo());
+        dto.setActivo(paciente.isActivo());
         dto.setEmail(paciente.getEmail());
         dto.setApellido(paciente.getApellido());
         dto.setDireccion(paciente.getDireccion());
@@ -82,6 +82,6 @@ public class PacienteMapper {
         return paciente;
     }
     public List<PacienteGetDTO>toDTOList(List<Paciente> pacientes){
-        return pacientes.stream().filter(Paciente::getActivo).map(this::toDTO).toList();
+        return pacientes.stream().filter(Paciente::isActivo).map(this::toDTO).toList();
     }
 }

@@ -24,7 +24,7 @@ public class ConsultorioService implements IConsultorio {
 
     @Override
     public Optional<ConsultorioGetDTO> findById(Integer id) {
-        return repo.findById(id).filter(Consultorio::getActivo).map(mapper::toDTO);
+        return repo.findById(id).filter(Consultorio::isActivo).map(mapper::toDTO);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class ConsultorioMapper {
         dto.setDescripcion(consultorio.getDescripcion());
         dto.setPiso(consultorio.getPiso());
         dto.setNumero(consultorio.getNumero());
-        dto.setActivo(consultorio.getActivo());
+        dto.setActivo(consultorio.isActivo());
         return dto;
     }
 
@@ -39,6 +39,6 @@ public class ConsultorioMapper {
         return consultorio;
     }
     public List<ConsultorioGetDTO> toDTOList(List<Consultorio> consultorios) {
-        return consultorios.stream().filter(Consultorio::getActivo).map(this::toDTO).toList();
+        return consultorios.stream().filter(Consultorio::isActivo).map(this::toDTO).toList();
     }
 }

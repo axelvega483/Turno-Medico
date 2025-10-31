@@ -27,7 +27,7 @@ public class ProfesionalMapper {
         dto.setDisponible(profesional.getEstadoDisponible());
         dto.setEmail(profesional.getEmail());
         dto.setMatricula(profesional.getMatricula());
-        dto.setActivo(profesional.getActivo());
+        dto.setActivo(profesional.isActivo());
         if (profesional.getEspecialidad() != null) {
             dto.setEspecialidad(mapper.toDTO(profesional.getEspecialidad()));
         }
@@ -73,7 +73,7 @@ public class ProfesionalMapper {
     }
 
     public List<ProfesionalGetDTO> toDTOList(List<Profesional> profesionales) {
-        return profesionales.stream().filter(Profesional::getActivo).map(this::toDTO).toList();
+        return profesionales.stream().filter(Profesional::isActivo).map(this::toDTO).toList();
     }
     public List<DisponibilidadGetDTO> disponibilidadesToDTO(List<Disponibilidad> disponibilidades) {
         return disponibilidades.stream()

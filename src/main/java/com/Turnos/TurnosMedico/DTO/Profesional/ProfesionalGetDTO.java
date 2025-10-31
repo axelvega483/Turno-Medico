@@ -30,6 +30,6 @@ public class ProfesionalGetDTO {
 
     private String email;
 
-    private Boolean activo;
+    private boolean activo;
 
 }

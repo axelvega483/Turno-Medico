@@ -10,5 +10,5 @@ public class ConsultorioGetDTO {
     private String numero;
     private String descripcion;
     private String piso;
-    private Boolean activo;
+    private boolean activo;
 }

@@ -32,13 +32,16 @@ public class PacienteService implements IPaciente {
                     .orElseThrow(() -> new RuntimeException("Obra Social no encontrada"));
             paciente.setObraSocial(obraSocial);
         }
+        if(repo.existsByDni(post.getDni())){
+            throw new IllegalArgumentException("El DNI ya está registrado");
+        }
         paciente = repo.save(paciente);
         return mapper.toDTO(paciente);
     }
 
     @Override
     public Optional<PacienteGetDTO> findById(Integer id) {
-        return repo.findById(id).filter(Paciente::getActivo).map(mapper::toDTO);
+        return repo.findById(id).filter(Paciente::isActivo).map(mapper::toDTO);
     }
 
     @Override
