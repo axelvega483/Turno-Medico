@@ -9,6 +9,7 @@ import com.Turnos.TurnosMedico.model.*;
 import com.Turnos.TurnosMedico.repositroy.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,20 +36,22 @@ public class TurnoService implements ITurno {
     @Override
     @Transactional
     public TurnoGetDTO create(TurnoPostDTO post) {
-        Paciente paciente = gestionarPaciente(post);
-        Profesional profesional = repoProfesional.findById(post.getProfesionalId())
-                .orElseThrow(() -> new EntityNotFoundException("Profesional no encontrado"));
-        Consultorio consultorio = repoConsultorio.findById(post.getConsultorioId())
-                .orElseThrow(() -> new EntityNotFoundException("Consultorio no encontrado"));
-        Especialidad especialidad = repoEspecialidad.findById(post.getEspecialidadId())
-                .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
-
-        validaciones(paciente, profesional, consultorio, especialidad);
-        validarDisponibilidad(post, profesional, consultorio);
-
-        Turno turno = mapper.toEntity(post, paciente, profesional, consultorio, especialidad);
-        Turno turnoSaved = repo.save(turno);
-        return mapper.toDTO(turnoSaved);
+        try {
+            Paciente paciente = gestionarPaciente(post);
+            Profesional profesional = repoProfesional.findById(post.getProfesionalId())
+                    .orElseThrow(() -> new EntityNotFoundException("Profesional no encontrado"));
+            Consultorio consultorio = repoConsultorio.findById(post.getConsultorioId())
+                    .orElseThrow(() -> new EntityNotFoundException("Consultorio no encontrado"));
+            Especialidad especialidad = repoEspecialidad.findById(post.getEspecialidadId())
+                    .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+            validaciones(paciente, profesional, consultorio, especialidad);
+            validarDisponibilidad(post, profesional, consultorio);
+            Turno turno = mapper.toEntity(post, paciente, profesional, consultorio, especialidad);
+            Turno turnoSaved = repo.save(turno);
+            return mapper.toDTO(turnoSaved);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("El turno ya fue reservado por otro usuario. Intente con otro horario.");
+        }
     }
 
     private Paciente gestionarPaciente(TurnoPostDTO post) {
