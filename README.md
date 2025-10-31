@@ -29,9 +29,7 @@ Sistema de backend para la administración integral de turnos médicos en clíni
 - **Maven**
 - **ModelMapper**
 
-  
 ---
-
 ## 📋 Configuración de Base de Datos
 
 ### Constraints Únicas (Ejecutar una vez en la BD)
@@ -97,5 +95,5 @@ UNIQUE (consultorio_id, fecha_hora, activo);
 - **Separación clean** entre capas de dominio y presentación.
 - **Manejo de excepciones** controlado y estandarizado.
 - **Código mantenible** siguiendo principios SOLID y mejores prácticas.
-
+- **Integridad de datos** garantizada a nivel de base de datos.
 ---
