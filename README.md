@@ -29,6 +29,26 @@ Sistema de backend para la administración integral de turnos médicos en clíni
 - **Maven**
 - **ModelMapper**
 
+  
+---
+
+## 📋 Configuración de Base de Datos
+
+### Constraints Únicas (Ejecutar una vez en la BD)
+
+Para prevenir la superposición de turnos, ejecutar las siguientes constraints en la base de datos:
+
+```sql
+-- Prevenir que un profesional tenga múltiples turnos en la misma fecha/hora
+ALTER TABLE turno 
+ADD CONSTRAINT uk_turno_profesional_fecha_activo 
+UNIQUE (profesional_id, fecha_hora, activo);
+
+-- Prevenir que un consultorio tenga múltiples turnos en la misma fecha/hora  
+ALTER TABLE turno 
+ADD CONSTRAINT uk_turno_consultorio_fecha_activo 
+UNIQUE (consultorio_id, fecha_hora, activo);
+```
 ---
 
 ## 📝 Requerimientos Funcionales
@@ -49,6 +69,7 @@ Sistema de backend para la administración integral de turnos médicos en clíni
    - Estados de turno (Pendiente, Confirmado, Atendido, Cancelado, No Presentado).
    - Tipos de consulta (Primera Vez, Control, Urgencia).
    - Reagendamiento y cancelación con observaciones.
+   - Prevención de duplicados mediante validación en servicio y constraints de BD.
 
 4. **Consultorios**:
    - Gestión de espacios físicos con ubicación por piso.
