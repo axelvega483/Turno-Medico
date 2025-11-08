@@ -1,99 +1,135 @@
-# 🏥 Sistema de Gestión de Turnos Médicos
+<h1 align="center">
+  🏥 Sistema de Gestión de Turnos Médicos
+</h1>
 
-Sistema de backend para la administración integral de turnos médicos en clínicas y hospitales. Permite gestionar pacientes, profesionales médicos, consultorios, especialidades, obras sociales y turnos. Diseñado para optimizar la asignación de turnos, controlar la disponibilidad de profesionales y mejorar la experiencia del paciente mediante una API REST robusta, escalable y segura.
+<p align="center">
+  <b>Sistema backend completo para administración integral de turnos médicos</b>
+  <br>
+  <em>Desarrollado con Spring Boot • MySQL • OpenAPI 3</em>
+</p>
+
+<p align="center">
+  <a href="http://localhost:8080/swagger-ui/index.html">
+    <img src="https://img.shields.io/badge/Documentación-SwaggerUI-brightgreen?style=for-the-badge&logo=swagger" alt="Swagger UI">
+  </a>
+  <a href="http://localhost:8080/v3/api-docs">
+    <img src="https://img.shields.io/badge/API-OpenAPI3-orange?style=for-the-badge&logo=openapi-initiative" alt="OpenAPI 3">
+  </a>
+  <img src="https://img.shields.io/badge/Java-17-blue?style=for-the-badge&logo=openjdk" alt="Java 17">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.4.5-brightgreen?style=for-the-badge&logo=springboot" alt="Spring Boot">
+</p>
 
 ---
 
 ## 🌟 Características del Sistema
 
-- **Gestión inteligente de turnos** con validación de disponibilidad de profesionales.
-- **Control de horarios y consultorios** por profesional y día de la semana.
-- **Sistema de disponibilidad** con estados configurables (Disponible, Vacaciones, Licencia).
-- **Relaciones complejas entre entidades**: pacientes, profesionales, consultorios, turnos y obras sociales.
-- **Validaciones integradas** en el modelo con mensajes personalizados.
-- **DTOs especializados** para diferentes operaciones y vistas.
-- **Auditoría automática** de fechas de creación y actualización.
+<div align="center">
+
+| Característica | Icono | Descripción |
+|----------------|-------|-------------|
+| **Gestión Inteligente de Turnos** | 📅 | Validación automática de disponibilidad de profesionales |
+| **Control de Estados** | 📊 | Seguimiento detallado de turnos (Pendiente, Confirmado, Atendido, Cancelado) |
+| **Confirmación y Anulación** | 🔄 | Actualización automática de disponibilidad |
+| **Relaciones Sólidas** | 🔗 | Entidades interconectadas: pacientes, profesionales, consultorios |
+| **Validaciones Integradas** | ✅ | Modelo con mensajes personalizados y robustos |
+| **DTOs Personalizados** | 🎯 | Vistas específicas para diferentes respuestas |
+| **Prevención de Conflictos** | 🛡️ | Constraints de BD para evitar superposición de turnos |
+
+</div>
+
+---
+
+## 📦 Módulos del Sistema
+
+<div align="center">
+
+| Módulo | Icono | Descripción | Endpoints |
+|--------|-------|-------------|-----------|
+| **Pacientes** | 👤 | Gestión completa de pacientes | `GET/POST/PUT/DELETE /pacientes` |
+| **Profesionales** | 👨‍⚕️ | Administración de profesionales médicos | `GET/POST/PUT/DELETE /profesionales` |
+| **Turnos** | 📅 | Procesos de agendamiento y gestión | `GET/POST/PUT /turnos` |
+| **Consultorios** | 🏢 | Control de espacios físicos | `GET/POST/PUT/DELETE /consultorios` |
+| **Especialidades** | 🎯 | Catálogo de especialidades médicas | `GET/POST/PUT/DELETE /especialidades` |
+| **Obras Sociales** | 💼 | Gestión de obras sociales y planes | `GET/POST/PUT/DELETE /obras-sociales` |
+
+</div>
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
+<div align="center">
+
 ### Back-end (API REST)
-- **Java 17**
-- **Spring Boot 3.x**
-- **Spring Web**
-- **Spring Data JPA**
-- **Bean Validation**
-- **Lombok**
-- **MySQL** / PostgreSQL (configurable)
-- **Maven**
-- **ModelMapper**
 
----
-## 📋 Configuración de Base de Datos
+| Tecnología | Icono | Uso |
+|------------|-------|-----|
+| **Java 17** | <img src="https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk" alt="Java 17"> | Lenguaje de programación principal |
+| **Spring Boot** | <img src="https://img.shields.io/badge/Spring_Boot-3.4.5-brightgreen?style=flat&logo=springboot" alt="Spring Boot"> | Framework principal de desarrollo |
+| **Spring Data JPA** | <img src="https://img.shields.io/badge/JPA-Hibernate-59666C?style=flat&logo=hibernate" alt="Spring Data JPA"> | Persistencia y mapeo ORM |
+| **MySQL** | <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql" alt="MySQL"> | Base de datos relacional |
+| **Bean Validation** | <img src="https://img.shields.io/badge/Validation-JSR380-orange?style=flat" alt="Bean Validation"> | Validación de datos y modelos |
+| **Maven** | <img src="https://img.shields.io/badge/Maven-C71A36?style=flat&logo=apache-maven" alt="Maven"> | Gestión de dependencias y build |
 
-### Constraints Únicas (Ejecutar una vez en la BD)
+</div>
 
-Para prevenir la superposición de turnos, ejecutar las siguientes constraints en la base de datos:
-
-```sql
--- Prevenir que un profesional tenga múltiples turnos en la misma fecha/hora
-ALTER TABLE turno 
-ADD CONSTRAINT uk_turno_profesional_fecha_activo 
-UNIQUE (profesional_id, fecha_hora, activo);
-
--- Prevenir que un consultorio tenga múltiples turnos en la misma fecha/hora  
-ALTER TABLE turno 
-ADD CONSTRAINT uk_turno_consultorio_fecha_activo 
-UNIQUE (consultorio_id, fecha_hora, activo);
-```
 ---
 
 ## 📝 Requerimientos Funcionales
 
-1. **Pacientes**:
-   - Registro completo con datos personales y obra social.
-   - Historial de turnos asociados.
-   - Validación de DNI y datos de contacto.
+<div align="center">
 
-2. **Profesionales Médicos**:
-   - Gestión de profesionales con matrícula única.
-   - Control de disponibilidad y horarios laborales.
-   - Especialización médica y duración de turnos configurable.
-   - Asignación múltiple de consultorios con horarios específicos.
+| Módulo | Funcionalidades | Estado |
+|--------|-----------------|--------|
+| **👤 Pacientes** | Registro completo • Historial de turnos • Validación de DNI • Obra social | ✅ Implementado |
+| **👨‍⚕️ Profesionales** | Gestión con matrícula única • Control de disponibilidad • Especialización • Consultorios múltiples | ✅ Implementado |
+| **📅 Turnos** | Agendamiento con validación • Múltiples estados • Tipos de consulta • Reagendamiento | ✅ Implementado |
+| **🏢 Consultorios** | Gestión de espacios físicos • Ubicación por piso • Asignación dinámica | ✅ Implementado |
+| **🎯 Especialidades** | Catálogo médico completo • Asociación con profesionales | ✅ Implementado |
+| **💼 Obras Sociales** | Administración de planes • Afiliación de pacientes | ✅ Implementado |
 
-3. **Turnos**:
-   - Agendamiento con validación de disponibilidad.
-   - Estados de turno (Pendiente, Confirmado, Atendido, Cancelado, No Presentado).
-   - Tipos de consulta (Primera Vez, Control, Urgencia).
-   - Reagendamiento y cancelación con observaciones.
-   - Prevención de duplicados mediante validación en servicio y constraints de BD.
+</div>
 
-4. **Consultorios**:
-   - Gestión de espacios físicos con ubicación por piso.
-   - Asignación dinámica a profesionales.
+---
 
-5. **Especialidades Médicas**:
-   - Catálogo de especialidades médicas.
-   - Asociación con profesionales.
+## 📄 Documentación Técnica
 
-6. **Obras Sociales**:
-   - Administración de obras sociales y planes.
-   - Afiliación de pacientes.
+<div align="center">
 
-7. **Disponibilidad**:
-   - Control centralizado del estado de profesionales.
-   - Prevención de conflictos de horarios.
+| Recurso | Enlace | Descripción |
+|---------|--------|-------------|
+| **📖 Swagger UI** | [Swagger](http://localhost:8080/swagger-ui/index.html) | Documentación interactiva completa de la API |
+| **🔧 Endpoints** | Ver tabla de módulos | Lista completa de endpoints disponibles |
+
+</div>
 
 ---
 
 ## ⚙️ Requerimientos No Funcionales
 
-- **Validaciones robustas** en entidades y DTOs con mensajes personalizados.
-- **Arquitectura escalable** preparada para integración con front-end y aplicaciones móviles.
-- **Prevención de conflictos** en horarios y consultorios.
-- **Separación clean** entre capas de dominio y presentación.
-- **Manejo de excepciones** controlado y estandarizado.
-- **Código mantenible** siguiendo principios SOLID y mejores prácticas.
-- **Integridad de datos** garantizada a nivel de base de datos.
+<div align="center">
+
+| Categoría | Especificación | Estado |
+|-----------|----------------|--------|
+| **🛡️ Validaciones** | Entidades con mensajes claros y personalizados | ✅ Implementado |
+| **📐 Modularidad** | Arquitectura escalable para futuras integraciones (web, mobile) | ✅ Implementado |
+| **💻 Código Limpio** | Principios SOLID y buenas prácticas de desarrollo | ✅ Implementado |
+| **🔒 Seguridad** | Validación de datos y relaciones consistentes | ✅ Implementado |
+| **📊 Performance** | Consultas optimizadas y gestión eficiente de recursos | ✅ Implementado |
+
+</div>
+
 ---
+
+<div align="center">
+
+## 🚀 ¿Listo para Comenzar?
+
+[**📖 Ir a la Documentación Interactiva**](http://localhost:8080/swagger-ui/index.html) •
+
+**⭐ ¡No olvides darle una estrella al repo si te fue útil!**
+
+---
+*Desarrollado con ❤️ usando Spring Boot y Java 17*
+
+</div>
