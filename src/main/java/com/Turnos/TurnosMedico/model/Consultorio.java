@@ -1,13 +1,11 @@
 package com.Turnos.TurnosMedico.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -28,6 +26,5 @@ public class Consultorio implements Serializable {
     @Column(nullable = false)
     private String piso;
 
-    @Column(name = "activo")
-    private boolean activo = true;
+    private boolean activo;
 }

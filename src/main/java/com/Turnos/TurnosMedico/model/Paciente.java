@@ -2,10 +2,7 @@ package com.Turnos.TurnosMedico.model;
 
 import com.Turnos.TurnosMedico.Util.TipoPaciente;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -56,15 +54,9 @@ public class Paciente implements Serializable {
     private LocalDateTime fechaRegistro;
 
     @Column(name = "activo")
-    private boolean activo = true;
+    private boolean activo;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Turno> turnos = new ArrayList<>();
-
-    @PrePersist
-    public void prePersist() {
-        this.fechaRegistro = LocalDateTime.now();
-        this.activo = true;
-    }
 
 }

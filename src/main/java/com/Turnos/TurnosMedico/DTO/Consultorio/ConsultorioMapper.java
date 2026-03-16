@@ -8,35 +8,33 @@ import java.util.List;
 @Component
 public class ConsultorioMapper {
     public ConsultorioGetDTO toDTO(Consultorio consultorio) {
-        ConsultorioGetDTO dto = new ConsultorioGetDTO();
-        dto.setId(consultorio.getId());
-        dto.setDescripcion(consultorio.getDescripcion());
-        dto.setPiso(consultorio.getPiso());
-        dto.setNumero(consultorio.getNumero());
-        dto.setActivo(consultorio.isActivo());
-        return dto;
+        return new ConsultorioGetDTO(
+                consultorio.getId(),
+                consultorio.getDescripcion(),
+                consultorio.getPiso(),
+                consultorio.getNumero()
+        );
     }
 
     public Consultorio toEntity(ConsultorioPostDTO postDTO) {
-        Consultorio consultorio = new Consultorio();
-        consultorio.setDescripcion(postDTO.getDescripcion());
-        consultorio.setPiso(postDTO.getPiso());
-        consultorio.setNumero(postDTO.getNumero());
-        consultorio.setActivo(true);
-        return consultorio;
+        return Consultorio.builder()
+                .descripcion(postDTO.descripcion())
+                .piso(postDTO.piso())
+                .numero(postDTO.numero())
+                .activo(true)
+                .build();
     }
 
-    public Consultorio updateEntityFromDTO(ConsultorioUpdateDTO updateDTO, Consultorio consultorio) {
-        if (updateDTO.getDescripcion() != null) {
-            consultorio.setDescripcion(updateDTO.getDescripcion());
+    public void updateEntityFromDTO(ConsultorioUpdateDTO updateDTO, Consultorio consultorio) {
+        if (updateDTO.descripcion() != null) {
+            consultorio.setDescripcion(updateDTO.descripcion());
         }
-        if (updateDTO.getNumero() != null) {
-            consultorio.setNumero(updateDTO.getNumero());
+        if (updateDTO.numero() != null) {
+            consultorio.setNumero(updateDTO.numero());
         }
-        if (updateDTO.getPiso() != null) {
-            consultorio.setPiso(updateDTO.getPiso());
+        if (updateDTO.piso() != null) {
+            consultorio.setPiso(updateDTO.piso());
         }
-        return consultorio;
     }
     public List<ConsultorioGetDTO> toDTOList(List<Consultorio> consultorios) {
         return consultorios.stream().filter(Consultorio::isActivo).map(this::toDTO).toList();

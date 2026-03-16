@@ -1,16 +1,8 @@
 package com.Turnos.TurnosMedico.DTO.Especialidad;
 
-import lombok.Getter;
-import lombok.Setter;
+public record EspecialidadGetDTO(
+        Integer id,
+        String nombre,
+        String descripcion) {
 
-@Getter
-@Setter
-public class EspecialidadGetDTO {
-    private Integer id;
-
-    private String nombre;
-
-    private String descripcion;
-
-    private boolean activo;
 }

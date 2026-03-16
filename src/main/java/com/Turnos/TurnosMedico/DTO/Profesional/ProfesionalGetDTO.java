@@ -3,33 +3,20 @@ package com.Turnos.TurnosMedico.DTO.Profesional;
 import com.Turnos.TurnosMedico.DTO.Disponibilidad.DisponibilidadGetDTO;
 import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadGetDTO;
 import com.Turnos.TurnosMedico.Util.EstadoDisponible;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
-@Setter
-public class ProfesionalGetDTO {
-    private Integer id;
-    private String matricula;
+public record ProfesionalGetDTO(
+        Integer id,
+        String matricula,
+        String nombre,
+        String apellido,
+        EstadoDisponible disponible,
+        EspecialidadGetDTO especialidad,
+        List<DisponibilidadGetDTO> disponibilidades,
+        String telefono,
+        String email) {
 
-    private String nombre;
-
-    private String apellido;
-
-    private EstadoDisponible disponible;
-
-    private EspecialidadGetDTO especialidad;
-
-    private List<DisponibilidadGetDTO> disponibilidades = new ArrayList<>();
-
-    private String telefono;
-
-    private String email;
-
-    private boolean activo;
 
 }

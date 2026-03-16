@@ -27,12 +27,12 @@ public class PacienteService implements IPaciente {
     @Override
     public PacienteGetDTO create(PacientePostDTO post) {
         Paciente paciente = mapper.toEntity(post);
-        if (post.getObraSocialId() != null) {
-            ObraSocial obraSocial = obraSocialRepo.findById(post.getObraSocialId())
+        if (post.obraSocialId() != null) {
+            ObraSocial obraSocial = obraSocialRepo.findById(post.obraSocialId())
                     .orElseThrow(() -> new RuntimeException("Obra Social no encontrada"));
             paciente.setObraSocial(obraSocial);
         }
-        if(repo.existsByDni(post.getDni())){
+        if (repo.existsByDni(post.dni())) {
             throw new IllegalArgumentException("El DNI ya está registrado");
         }
         paciente = repo.save(paciente);
@@ -54,8 +54,8 @@ public class PacienteService implements IPaciente {
         Paciente paciente = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Paciente no encontrado"));
         mapper.updateEntityFromDTO(update, paciente);
-        if (update.getObraSocialId() != null) {
-            ObraSocial obraSocial = obraSocialRepo.findById(update.getObraSocialId())
+        if (update.obraSocialId() != null) {
+            ObraSocial obraSocial = obraSocialRepo.findById(update.obraSocialId())
                     .orElseThrow(() -> new RuntimeException("Obra Social no encontrada"));
             paciente.setObraSocial(obraSocial);
         }

@@ -11,26 +11,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class TurnoUpdateDTO {
-    private Integer pacienteId;
+public record TurnoUpdateDTO(
+        Integer pacienteId,
+        Integer profesionalId,
+        Integer especialidadId,
+        Integer consultorioId,
+        @Future(message = "La fecha y hora deben ser futuras")
+        LocalDateTime fechaHora,
+        EstadoTurno estado,
+        TipoConsulta tipoConsulta) {
 
-    private Integer profesionalId;
-
-    private Integer especialidadId;
-
-    private Integer consultorioId;
-
-    @Future(message = "La fecha y hora deben ser futuras")
-    private LocalDateTime fechaHora;
-
-    private EstadoTurno estado;
-
-    private TipoConsulta tipoConsulta;
-
-    @Size(max = 500, message = "Las observaciones no pueden exceder los 500 caracteres")
-    private String observaciones;
 }

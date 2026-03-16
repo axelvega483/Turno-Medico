@@ -156,10 +156,10 @@ public class ProfesionalController {
 
         ProfesionalGetDTO profesional = profesionalService.agregarDisponibilidad(
                 id,
-                disponibilidadDTO.getConsultorioId(),
-                disponibilidadDTO.getDia(),
-                disponibilidadDTO.getHorarioInicio(),
-                disponibilidadDTO.getHorarioFin()
+                disponibilidadDTO.consultorioId(),
+                disponibilidadDTO.dia(),
+                disponibilidadDTO.horarioInicio(),
+                disponibilidadDTO.horarioFin()
         );
         return new ResponseEntity<>(new CustomApiResponse<>("Disponibilidad agregada exitosamente", profesional, true), HttpStatus.OK);
     }

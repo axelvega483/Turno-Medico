@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.service;
 
+import com.Turnos.TurnosMedico.DTO.Paciente.PacienteMapper;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoGetDTO;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoMapper;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoPostDTO;
@@ -17,11 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class TurnoService implements ITurno {
     @Autowired
     private TurnoRepository repo;
     @Autowired
     private TurnoMapper mapper;
+    @Autowired
+    private PacienteMapper pacienteMapper;
     @Autowired
     private PacienteRepository repoPaciente;
     @Autowired
@@ -30,19 +34,17 @@ public class TurnoService implements ITurno {
     private ConsultorioRepository repoConsultorio;
     @Autowired
     private EspecialidadRepository repoEspecialidad;
-    @Autowired
-    private ObraSocialRepository obraSocialRepo;
+
 
     @Override
-    @Transactional
     public TurnoGetDTO create(TurnoPostDTO post) {
         try {
             Paciente paciente = gestionarPaciente(post);
-            Profesional profesional = repoProfesional.findById(post.getProfesionalId())
+            Profesional profesional = repoProfesional.findById(post.profesionalId())
                     .orElseThrow(() -> new EntityNotFoundException("Profesional no encontrado"));
-            Consultorio consultorio = repoConsultorio.findById(post.getConsultorioId())
+            Consultorio consultorio = repoConsultorio.findById(post.consultorioId())
                     .orElseThrow(() -> new EntityNotFoundException("Consultorio no encontrado"));
-            Especialidad especialidad = repoEspecialidad.findById(post.getEspecialidadId())
+            Especialidad especialidad = repoEspecialidad.findById(post.especialidadId())
                     .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
             validaciones(paciente, profesional, consultorio, especialidad);
             validarDisponibilidad(post, profesional, consultorio);
@@ -55,31 +57,16 @@ public class TurnoService implements ITurno {
     }
 
     private Paciente gestionarPaciente(TurnoPostDTO post) {
-        Optional<Paciente> pacienteExistente = repoPaciente.findByDni(post.getPaciente().getDni());
+        Optional<Paciente> pacienteExistente = repoPaciente.findByDni(post.paciente().dni());
 
         if (pacienteExistente.isPresent()) {
             return pacienteExistente.get();
+
         } else {
-            if (post.getPaciente().getDni() == null || post.getPaciente().getNombre() == null || post.getPaciente().getApellido() == null) {
+            if (post.paciente().dni() == null || post.paciente().nombre() == null || post.paciente().apellido() == null) {
                 throw new IllegalArgumentException("DNI, nombre y apellido son obligatorios para nuevo paciente");
             }
-            Paciente paciente = new Paciente();
-            paciente.setDni(post.getPaciente().getDni());
-            paciente.setNombre(post.getPaciente().getNombre());
-            paciente.setApellido(post.getPaciente().getApellido());
-            paciente.setFechaNacimiento(post.getPaciente().getFechaNacimiento());
-            paciente.setGenero(post.getPaciente().getGenero());
-            paciente.setTelefono(post.getPaciente().getTelefono());
-            paciente.setEmail(post.getPaciente().getEmail());
-            paciente.setDireccion(post.getPaciente().getDireccion());
-            if (post.getPaciente().getObraSocialId() != null) {
-                ObraSocial obraSocial = obraSocialRepo.findById(post.getPaciente().getObraSocialId())
-                        .orElseThrow(() -> new EntityNotFoundException("Obra Social no encontrada con ID: " + post.getPaciente().getObraSocialId()));
-                paciente.setObraSocial(obraSocial);
-            }
-            paciente.setNumeroAfiliado(post.getPaciente().getNumeroAfiliado());
-            paciente.setTipoPaciente(post.getPaciente().getTipoPaciente());
-            paciente.setActivo(true);
+            Paciente paciente = pacienteMapper.toEntity(post.paciente());
             return repoPaciente.save(paciente);
         }
     }
@@ -91,7 +78,7 @@ public class TurnoService implements ITurno {
         if (!profesional.isActivo()) {
             throw new IllegalStateException("El profesional no está activo");
         }
-        if (!profesional.getEspecialidad().equals(especialidad)) {
+        if (!profesional.getEspecialidad().getId().equals(especialidad.getId())) {
             throw new IllegalStateException(
                     String.format("El profesional %s %s tiene la especialidad %s, no %s",
                             profesional.getNombre(), profesional.getApellido(),
@@ -107,10 +94,10 @@ public class TurnoService implements ITurno {
     }
 
     private void validarDisponibilidad(TurnoPostDTO post, Profesional profesional, Consultorio consultorio) {
-        if (repo.existsByProfesionalAndFechaHoraAndActivoTrue(profesional, post.getFechaHora())) {
+        if (repo.existsByProfesionalAndFechaHoraAndActivoTrue(profesional, post.fechaHora())) {
             throw new IllegalStateException("El profesional ya tiene un turno en ese horario");
         }
-        if (repo.existsByConsultorioAndFechaHoraAndActivoTrue(consultorio, post.getFechaHora())) {
+        if (repo.existsByConsultorioAndFechaHoraAndActivoTrue(consultorio, post.fechaHora())) {
             throw new IllegalStateException("El consultorio ya está ocupado en ese horario");
         }
     }
@@ -136,23 +123,23 @@ public class TurnoService implements ITurno {
 
         mapper.updateEntityFromDTO(update, turno);
 
-        if (update.getPacienteId() != null) {
-            Paciente paciente = repoPaciente.findById(update.getPacienteId())
+        if (update.pacienteId() != null) {
+            Paciente paciente = repoPaciente.findById(update.pacienteId())
                     .orElseThrow(() -> new EntityNotFoundException("Paciente no encontrado"));
             turno.setPaciente(paciente);
         }
-        if (update.getProfesionalId() != null) {
-            Profesional profesional = repoProfesional.findById(update.getProfesionalId())
+        if (update.profesionalId() != null) {
+            Profesional profesional = repoProfesional.findById(update.profesionalId())
                     .orElseThrow(() -> new EntityNotFoundException("Profesional no encontrado"));
             turno.setProfesional(profesional);
         }
-        if (update.getConsultorioId() != null) {
-            Consultorio consultorio = repoConsultorio.findById(update.getConsultorioId())
+        if (update.consultorioId() != null) {
+            Consultorio consultorio = repoConsultorio.findById(update.consultorioId())
                     .orElseThrow(() -> new EntityNotFoundException("Consultorio no encontrado"));
             turno.setConsultorio(consultorio);
         }
-        if (update.getEspecialidadId() != null) {
-            Especialidad especialidad = repoEspecialidad.findById(update.getEspecialidadId())
+        if (update.especialidadId() != null) {
+            Especialidad especialidad = repoEspecialidad.findById(update.especialidadId())
                     .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
             turno.setEspecialidad(especialidad);
         }

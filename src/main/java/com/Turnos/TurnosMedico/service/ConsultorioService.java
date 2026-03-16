@@ -30,7 +30,7 @@ public class ConsultorioService implements IConsultorio {
     @Override
     public ConsultorioGetDTO create(ConsultorioPostDTO post) {
         Consultorio consultorio = mapper.toEntity(post);
-        if (repo.existsByNumeroAndPiso(post.getNumero(), post.getPiso())) {
+        if (repo.existsByNumeroAndPiso(post.numero(), post.piso())) {
             throw new IllegalArgumentException("Ya existe un consultorio con ese número y piso.");
         }
         repo.save(consultorio);

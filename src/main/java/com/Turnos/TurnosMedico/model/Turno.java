@@ -3,15 +3,13 @@ package com.Turnos.TurnosMedico.model;
 import com.Turnos.TurnosMedico.Util.EstadoTurno;
 import com.Turnos.TurnosMedico.Util.TipoConsulta;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -60,5 +58,5 @@ public class Turno implements Serializable {
     private LocalDateTime fechaActualizacion;
 
     @Column(name = "activo")
-    private boolean activo = true;
+    private boolean activo;
 }

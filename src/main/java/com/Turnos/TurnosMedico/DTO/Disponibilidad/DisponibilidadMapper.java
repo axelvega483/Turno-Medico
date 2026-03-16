@@ -9,14 +9,15 @@ import org.springframework.stereotype.Component;
 public class DisponibilidadMapper {
     @Autowired
     private ConsultorioMapper mapper;
+
     public DisponibilidadGetDTO toDTO(Disponibilidad disponibilidad) {
-        DisponibilidadGetDTO dto = new DisponibilidadGetDTO();
-        dto.setDia(disponibilidad.getDia());
-        dto.setHorarioFin(disponibilidad.getHorarioFin());
-        dto.setHorarioInicio(disponibilidad.getHorarioInicio());
-        if (disponibilidad.getConsultorio() != null) {
-            dto.setConsultorio(mapper.toDTO(disponibilidad.getConsultorio()));
-        }
-        return  dto;
+        return new DisponibilidadGetDTO(
+                disponibilidad.getDia(),
+                disponibilidad.getHorarioInicio(),
+                disponibilidad.getHorarioFin(),
+                disponibilidad.getConsultorio() != null
+                        ? mapper.toDTO(disponibilidad.getConsultorio())
+                        : null
+        );
     }
 }

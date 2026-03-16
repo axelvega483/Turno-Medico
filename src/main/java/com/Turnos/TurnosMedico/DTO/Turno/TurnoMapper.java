@@ -1,5 +1,6 @@
 package com.Turnos.TurnosMedico.DTO.Turno;
 
+import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadMapper;
 import com.Turnos.TurnosMedico.DTO.Paciente.PacienteMapper;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalGetDTO;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalMapper;
@@ -16,50 +17,49 @@ public class TurnoMapper {
     private ProfesionalMapper mapperProfesional;
     @Autowired
     private PacienteMapper mapperPaciente;
+    @Autowired
+    private EspecialidadMapper mapperEspecialidad;
 
     public TurnoGetDTO toDTO(Turno turno) {
-        TurnoGetDTO dto = new TurnoGetDTO();
-        dto.setId(turno.getId());
-        if (turno.getProfesional() != null) {
-            dto.setProfesional(mapperProfesional.toDTO(turno.getProfesional()));
-        }
-        if (turno.getPaciente() != null) {
-            dto.setPaciente(mapperPaciente.toDTO(turno.getPaciente()));
-        }
-        dto.setFechaHora(turno.getFechaHora());
-        dto.setEstado(turno.getEstado());
-        dto.setTipoConsulta(turno.getTipoConsulta());
-        dto.setFechaCreacion(turno.getFechaCreacion());
-        dto.setFechaActualizacion(turno.getFechaActualizacion());
-        dto.setActivo(turno.isActivo());
-        return dto;
+        return new TurnoGetDTO(
+                turno.getId(),
+                turno.getPaciente() != null ? mapperPaciente.toDTO(turno.getPaciente()) : null,
+                turno.getProfesional() != null ? mapperProfesional.toDTO(turno.getProfesional()) : null,
+                turno.getEspecialidad() != null ? mapperEspecialidad.toDTO(turno.getEspecialidad()) : null,
+                turno.getFechaHora(),
+                turno.getEstado(),
+                turno.getTipoConsulta(),
+                turno.getFechaCreacion(),
+                turno.getFechaActualizacion()
+
+        );
     }
 
     public Turno toEntity(TurnoPostDTO dto, Paciente paciente, Profesional profesional, Consultorio consultorio, Especialidad especialidad) {
-        Turno turno = new Turno();
-        turno.setFechaHora(dto.getFechaHora());
-        turno.setEstado(dto.getEstado());
-        turno.setTipoConsulta(dto.getTipoConsulta());
-        turno.setFechaCreacion(LocalDateTime.now());
-        turno.setPaciente(paciente);
-        turno.setProfesional(profesional);
-        turno.setConsultorio(consultorio);
-        turno.setEspecialidad(especialidad);
-        turno.setActivo(true);
-        return turno;
+        return Turno.builder()
+                .fechaHora(dto.fechaHora())
+                .estado(dto.estado())
+                .tipoConsulta(dto.tipoConsulta())
+                .fechaCreacion(LocalDateTime.now())
+                .paciente(paciente)
+                .profesional(profesional)
+                .consultorio(consultorio)
+                .especialidad(especialidad)
+                .activo(true)
+                .build();
     }
-    public Turno updateEntityFromDTO(TurnoUpdateDTO dto, Turno turno) {
-        if (dto.getFechaHora() != null) {
-            turno.setFechaHora(dto.getFechaHora());
+
+    public void updateEntityFromDTO(TurnoUpdateDTO dto, Turno turno) {
+        if (dto.fechaHora() != null) {
+            turno.setFechaHora(dto.fechaHora());
         }
-        if (dto.getEstado() != null) {
-            turno.setEstado(dto.getEstado());
+        if (dto.estado() != null) {
+            turno.setEstado(dto.estado());
         }
-        if (dto.getTipoConsulta() != null) {
-            turno.setTipoConsulta(dto.getTipoConsulta());
+        if (dto.tipoConsulta() != null) {
+            turno.setTipoConsulta(dto.tipoConsulta());
         }
         turno.setFechaActualizacion(LocalDateTime.now());
-        return turno;
     }
 
     public List<TurnoGetDTO> toDTOList(List<Turno> turnos) {

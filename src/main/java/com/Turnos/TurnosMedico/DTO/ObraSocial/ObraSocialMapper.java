@@ -8,40 +8,38 @@ import java.util.List;
 @Component
 public class ObraSocialMapper {
     public ObraSocialGetDTO toDTO(ObraSocial obraSocial) {
-        ObraSocialGetDTO dto = new ObraSocialGetDTO();
-        dto.setId(obraSocial.getId());
-        dto.setActivo(obraSocial.isActivo());
-        dto.setCodigo(obraSocial.getCodigo());
-        dto.setNombre(obraSocial.getNombre());
-        dto.setEmail(obraSocial.getEmail());
-        dto.setTelefono(obraSocial.getTelefono());
-        return dto;
+        return new ObraSocialGetDTO(
+                obraSocial.getId(),
+                obraSocial.getNombre(),
+                obraSocial.getCodigo(),
+                obraSocial.getTelefono(),
+                obraSocial.getEmail()
+        );
     }
 
     public ObraSocial toEntity(ObraSocialPostDTO postDTO) {
-        ObraSocial obraSocial = new ObraSocial();
-        obraSocial.setActivo(postDTO.getActivo());
-        obraSocial.setCodigo(postDTO.getCodigo());
-        obraSocial.setNombre(postDTO.getNombre());
-        obraSocial.setEmail(postDTO.getEmail());
-        obraSocial.setTelefono(postDTO.getTelefono());
-        return obraSocial;
+        return ObraSocial.builder()
+                .nombre(postDTO.nombre())
+                .codigo(postDTO.codigo())
+                .telefono(postDTO.telefono())
+                .email(postDTO.email())
+                .activo(true)
+                .build();
     }
 
-    public ObraSocial updateEntityFromDTO(ObraSocialUpdateDTO updateDTO, ObraSocial existingObraSocial) {
-        if (updateDTO.getNombre() != null) {
-            existingObraSocial.setNombre(updateDTO.getNombre());
+    public void updateEntityFromDTO(ObraSocialUpdateDTO updateDTO, ObraSocial obraSocial) {
+        if (updateDTO.nombre() != null) {
+            obraSocial.setNombre(updateDTO.nombre());
         }
-        if (updateDTO.getCodigo() != null) {
-            existingObraSocial.setCodigo(updateDTO.getCodigo());
+        if (updateDTO.codigo() != null) {
+            obraSocial.setCodigo(updateDTO.codigo());
         }
-        if (updateDTO.getEmail() != null) {
-            existingObraSocial.setEmail(updateDTO.getEmail());
+        if (updateDTO.email() != null) {
+            obraSocial.setEmail(updateDTO.email());
         }
-        if (updateDTO.getTelefono() != null) {
-            existingObraSocial.setTelefono(updateDTO.getTelefono());
+        if (updateDTO.telefono() != null) {
+            obraSocial.setTelefono(updateDTO.telefono());
         }
-        return existingObraSocial;
     }
 
     public List<ObraSocialGetDTO> toDTOList(List<ObraSocial> obraSocials) {

@@ -3,10 +3,7 @@ package com.Turnos.TurnosMedico.model;
 import com.Turnos.TurnosMedico.Util.Dia;
 import com.Turnos.TurnosMedico.Util.EstadoDisponible;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor

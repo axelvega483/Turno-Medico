@@ -1,13 +1,11 @@
 package com.Turnos.TurnosMedico.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,7 +22,6 @@ public class Especialidad implements Serializable {
 
     private String descripcion;
 
-    @Column(name = "activo")
-    private boolean activo = true;
+    private boolean activo ;
 
 }

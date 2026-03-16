@@ -1,7 +1,5 @@
 package com.Turnos.TurnosMedico.DTO.Especialidad;
 
-import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioGetDTO;
-import com.Turnos.TurnosMedico.model.Consultorio;
 import com.Turnos.TurnosMedico.model.Especialidad;
 import org.springframework.stereotype.Component;
 
@@ -10,30 +8,28 @@ import java.util.List;
 @Component
 public class EspecialidadMapper {
     public EspecialidadGetDTO toDTO(Especialidad especialidad) {
-        EspecialidadGetDTO dto = new EspecialidadGetDTO();
-        dto.setId(especialidad.getId());
-        dto.setActivo(especialidad.isActivo());
-        dto.setDescripcion(especialidad.getDescripcion());
-        dto.setNombre(especialidad.getNombre());
-        return dto;
+        return new EspecialidadGetDTO(
+                especialidad.getId(),
+                especialidad.getNombre(),
+                especialidad.getDescripcion()
+        );
     }
 
     public Especialidad toEntity(EspecialidadPostDTO post) {
-        Especialidad especialidad = new Especialidad();
-        especialidad.setActivo(post.getActivo());
-        especialidad.setNombre(post.getNombre());
-        especialidad.setDescripcion(post.getDescripcion());
-        return especialidad;
+        return Especialidad.builder()
+                        .nombre(post.nombre())
+                        .descripcion(post.descripcion())
+                        .activo(true)
+                        .build();
     }
 
-    public Especialidad updateEntityFromDTO(EspecialidadUpdateDTO updateDTO, Especialidad especialidad) {
-        if (updateDTO.getNombre() != null) {
-            especialidad.setNombre(updateDTO.getNombre());
+    public void updateEntityFromDTO(EspecialidadUpdateDTO updateDTO, Especialidad especialidad) {
+        if (updateDTO.nombre() != null) {
+            especialidad.setNombre(updateDTO.nombre());
         }
-        if (updateDTO.getDescripcion() != null) {
-            especialidad.setDescripcion(updateDTO.getDescripcion());
+        if (updateDTO.descripcion() != null) {
+            especialidad.setDescripcion(updateDTO.descripcion());
         }
-        return especialidad;
     }
 
     public List<EspecialidadGetDTO> toDTOList(List<Especialidad> especialidades) {

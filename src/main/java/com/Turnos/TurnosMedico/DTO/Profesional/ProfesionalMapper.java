@@ -5,6 +5,7 @@ import com.Turnos.TurnosMedico.DTO.Disponibilidad.DisponibilidadGetDTO;
 import com.Turnos.TurnosMedico.DTO.Especialidad.EspecialidadMapper;
 import com.Turnos.TurnosMedico.model.Disponibilidad;
 import com.Turnos.TurnosMedico.model.Profesional;
+import com.Turnos.TurnosMedico.repositroy.EspecialidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,65 +17,65 @@ public class ProfesionalMapper {
     @Autowired
     private EspecialidadMapper mapper;
     @Autowired
+    private EspecialidadRepository especialidadRepo;
+    @Autowired
     private ConsultorioMapper consultorioMapper;
 
 
     public ProfesionalGetDTO toDTO(Profesional profesional) {
-        ProfesionalGetDTO dto = new ProfesionalGetDTO();
-        dto.setId(profesional.getId());
-        dto.setApellido(profesional.getApellido());
-        dto.setNombre(profesional.getNombre());
-        dto.setDisponible(profesional.getEstadoDisponible());
-        dto.setEmail(profesional.getEmail());
-        dto.setMatricula(profesional.getMatricula());
-        dto.setActivo(profesional.isActivo());
-        if (profesional.getEspecialidad() != null) {
-            dto.setEspecialidad(mapper.toDTO(profesional.getEspecialidad()));
-        }
-        if (profesional.getDisponibilidades() != null && !profesional.getDisponibilidades().isEmpty()) {
-            dto.setDisponibilidades(disponibilidadesToDTO(profesional.getDisponibilidades()));
-        }
-        dto.setTelefono(profesional.getTelefono());
-        return dto;
+        return new ProfesionalGetDTO(
+                profesional.getId(),
+                profesional.getMatricula(),
+                profesional.getNombre(),
+                profesional.getApellido(),
+                profesional.getEstadoDisponible(),
+                profesional.getEspecialidad() != null ? mapper.toDTO(profesional.getEspecialidad()) : null,
+                profesional.getDisponibilidades() != null ? disponibilidadesToDTO(profesional.getDisponibilidades()) : null,
+                profesional.getTelefono(),
+                profesional.getEmail()
+        );
     }
 
     public Profesional toEntity(ProfesionalPostDTO dto) {
-        Profesional profesional = new Profesional();
-        profesional.setApellido(dto.getApellido());
-        profesional.setNombre(dto.getNombre());
-        profesional.setEstadoDisponible(dto.getDisponibilidad());
-        profesional.setEmail(dto.getEmail());
-        profesional.setMatricula(dto.getMatricula());
-        profesional.setActivo(dto.getActivo());
-        profesional.setTelefono(dto.getTelefono());
-        return profesional;
+        return Profesional.builder()
+                .apellido(dto.apellido())
+                .nombre(dto.nombre())
+                .estadoDisponible(dto.disponibilidad())
+                .email(dto.email())
+                .matricula(dto.matricula())
+                .activo(true)
+                .telefono(dto.telefono())
+                .especialidad(dto.especialidadId() != null ? especialidadRepo.findById(dto.especialidadId())
+                        .orElseThrow(() -> new RuntimeException("Especialidad no encontrada"))
+                        : null)
+                .build();
     }
 
-    public Profesional updateEntityFromDTO(ProfesionalUpdateDTO dto, Profesional profesional) {
-        if (dto.getMatricula() != null) {
-            profesional.setMatricula(dto.getMatricula());
+    public void updateEntityFromDTO(ProfesionalUpdateDTO dto, Profesional profesional) {
+        if (dto.matricula() != null) {
+            profesional.setMatricula(dto.matricula());
         }
-        if (dto.getNombre() != null) {
-            profesional.setNombre(dto.getNombre());
+        if (dto.nombre() != null) {
+            profesional.setNombre(dto.nombre());
         }
-        if (dto.getApellido() != null) {
-            profesional.setApellido(dto.getApellido());
+        if (dto.apellido() != null) {
+            profesional.setApellido(dto.apellido());
         }
-        if (dto.getEmail() != null) {
-            profesional.setEmail(dto.getEmail());
+        if (dto.email() != null) {
+            profesional.setEmail(dto.email());
         }
-        if (dto.getTelefono() != null) {
-            profesional.setTelefono(dto.getTelefono());
+        if (dto.telefono() != null) {
+            profesional.setTelefono(dto.telefono());
         }
-        if (dto.getDisponibilidad() != null) {
-            profesional.setEstadoDisponible(dto.getDisponibilidad());
+        if (dto.disponibilidad() != null) {
+            profesional.setEstadoDisponible(dto.disponibilidad());
         }
-        return profesional;
     }
 
     public List<ProfesionalGetDTO> toDTOList(List<Profesional> profesionales) {
         return profesionales.stream().filter(Profesional::isActivo).map(this::toDTO).toList();
     }
+
     public List<DisponibilidadGetDTO> disponibilidadesToDTO(List<Disponibilidad> disponibilidades) {
         return disponibilidades.stream()
                 .map(this::disponibilidadToDTO)
@@ -82,13 +83,14 @@ public class ProfesionalMapper {
     }
 
     public DisponibilidadGetDTO disponibilidadToDTO(Disponibilidad disponibilidad) {
-        DisponibilidadGetDTO dto = new DisponibilidadGetDTO();
-        dto.setDia(disponibilidad.getDia());
-        dto.setHorarioInicio(disponibilidad.getHorarioInicio());
-        dto.setHorarioFin(disponibilidad.getHorarioFin());
-        if(disponibilidad.getConsultorio() != null){
-            dto.setConsultorio(consultorioMapper.toDTO(disponibilidad.getConsultorio()));
-        }
-        return dto;
+        return new DisponibilidadGetDTO(
+                disponibilidad.getDia(),
+                disponibilidad.getHorarioInicio(),
+                disponibilidad.getHorarioFin(),
+                disponibilidad.getConsultorio() != null ? consultorioMapper.toDTO(disponibilidad.getConsultorio()) : null
+
+
+        );
+
     }
 }

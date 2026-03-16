@@ -35,8 +35,8 @@ public class ProfesionalService implements IProfesional {
     @Override
     public ProfesionalGetDTO create(ProfesionalPostDTO post) {
         Profesional profesional = mapper.toEntity(post);
-        if (post.getEspecialidadId() != null) {
-            Especialidad especialidad = especialidadRepo.findById(post.getEspecialidadId())
+        if (post.especialidadId() != null) {
+            Especialidad especialidad = especialidadRepo.findById(post.especialidadId())
                     .orElseThrow(() -> new RuntimeException("Especialidad no encontrada"));
             profesional.setEspecialidad(especialidad);
         }
@@ -59,8 +59,8 @@ public class ProfesionalService implements IProfesional {
         Profesional profesional = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Profesional no encontrado"));
         mapper.updateEntityFromDTO(update, profesional);
-        if (update.getEspecialidadId() != null) {
-            Especialidad especialidad = especialidadRepo.findById(update.getEspecialidadId())
+        if (update.especialidadId() != null) {
+            Especialidad especialidad = especialidadRepo.findById(update.especialidadId())
                     .orElseThrow(() -> new RuntimeException("Especialidad no encontrada"));
             profesional.setEspecialidad(especialidad);
         }
