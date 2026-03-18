@@ -3,7 +3,7 @@ package com.Turnos.TurnosMedico.controller;
 import com.Turnos.TurnosMedico.DTO.ObraSocial.ObraSocialGetDTO;
 import com.Turnos.TurnosMedico.DTO.ObraSocial.ObraSocialPostDTO;
 import com.Turnos.TurnosMedico.DTO.ObraSocial.ObraSocialUpdateDTO;
-import com.Turnos.TurnosMedico.Util.CustomApiResponse;
+import com.Turnos.TurnosMedico.Util.ApiRespons;
 import com.Turnos.TurnosMedico.interfaz.IObraSocial;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,11 +34,11 @@ public class ObraSocialController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<CustomApiResponse<ObraSocialGetDTO>> create(
+    public ResponseEntity<ApiRespons<ObraSocialGetDTO>> create(
             @Parameter(description = "Datos de la obra social a crear", required = true)
             @Valid @RequestBody ObraSocialPostDTO obraSocialDTO) {
         ObraSocialGetDTO dto = obraSocialService.create(obraSocialDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Obra social creada exitosamente", dto, true), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiRespons.ok("Obra social creada exitosamente", dto), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Listar todas las obras sociales", description = "Devuelve una lista con todas las obras sociales registradas")
@@ -48,10 +48,10 @@ public class ObraSocialController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public ResponseEntity<CustomApiResponse<List<ObraSocialGetDTO>>> findAll() {
+    public ResponseEntity<ApiRespons<List<ObraSocialGetDTO>>> findAll() {
         List<ObraSocialGetDTO> obrasSociales = obraSocialService.findAll();
         String message = obrasSociales == null || obrasSociales.isEmpty() ? "No hay obras sociales registradas" : "Obras sociales recuperadas exitosamente";
-        return new ResponseEntity<>(new CustomApiResponse<>(message, obrasSociales, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok(message, obrasSociales), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener obra social por ID", description = "Devuelve una obra social específica basada en su ID")
@@ -61,12 +61,12 @@ public class ObraSocialController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ObraSocialGetDTO>> findById(
+    public ResponseEntity<ApiRespons<ObraSocialGetDTO>> findById(
             @Parameter(description = "ID de la obra social a buscar", example = "1", required = true)
             @PathVariable Integer id) {
         return obraSocialService.findById(id)
-                .map(obraSocial -> new ResponseEntity<>(new CustomApiResponse<>("Obra social encontrada", obraSocial, true), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(new CustomApiResponse<>("Obra social no encontrada", null, false), HttpStatus.NOT_FOUND));
+                .map(obraSocial -> new ResponseEntity<>(new ApiRespons<>("Obra social encontrada", obraSocial, true), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ApiRespons.ok("Obra social no encontrada", null), HttpStatus.NOT_FOUND));
     }
 
     @Operation(summary = "Actualizar obra social existente", description = "Actualiza la información de una obra social existente")
@@ -77,13 +77,13 @@ public class ObraSocialController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ObraSocialGetDTO>> update(
+    public ResponseEntity<ApiRespons<ObraSocialGetDTO>> update(
             @Parameter(description = "ID de la obra social a actualizar", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Datos actualizados de la obra social", required = true)
             @Valid @RequestBody ObraSocialUpdateDTO obraSocialDTO) {
         ObraSocialGetDTO dto = obraSocialService.update(id, obraSocialDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Obra social actualizada exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Obra social actualizada exitosamente", dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Eliminar obra social", description = "Da de baja una obra social del sistema")
@@ -93,10 +93,10 @@ public class ObraSocialController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ObraSocialGetDTO>> delete(
+    public ResponseEntity<ApiRespons<ObraSocialGetDTO>> delete(
             @Parameter(description = "ID de la obra social a eliminar", example = "1", required = true)
             @PathVariable Integer id) {
         ObraSocialGetDTO dto = obraSocialService.delete(id);
-        return new ResponseEntity<>(new CustomApiResponse<>("Obra social dada de baja exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Obra social dada de baja exitosamente", dto), HttpStatus.OK);
     }
 }

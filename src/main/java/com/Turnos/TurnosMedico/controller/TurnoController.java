@@ -3,7 +3,7 @@ package com.Turnos.TurnosMedico.controller;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoGetDTO;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoPostDTO;
 import com.Turnos.TurnosMedico.DTO.Turno.TurnoUpdateDTO;
-import com.Turnos.TurnosMedico.Util.CustomApiResponse;
+import com.Turnos.TurnosMedico.Util.ApiRespons;
 import com.Turnos.TurnosMedico.interfaz.ITurno;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,11 +35,11 @@ public class TurnoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<CustomApiResponse<TurnoGetDTO>> create(
+    public ResponseEntity<ApiRespons<TurnoGetDTO>> create(
             @Parameter(description = "Datos del turno a crear", required = true)
             @Valid @RequestBody TurnoPostDTO turnoPostDTO) {
         TurnoGetDTO dto = turnoService.create(turnoPostDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Turno creado exitosamente", dto, true), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiRespons.ok("Turno creado exitosamente", dto), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Listar todos los turnos", description = "Devuelve una lista con todos los turnos registrados")
@@ -49,10 +49,10 @@ public class TurnoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public ResponseEntity<CustomApiResponse<List<TurnoGetDTO>>> findAll() {
+    public ResponseEntity<ApiRespons<List<TurnoGetDTO>>> findAll() {
         List<TurnoGetDTO> turnos = turnoService.findAll();
         String message = turnos.isEmpty() ? "No hay turnos registrados" : "Turnos recuperados exitosamente";
-        return new ResponseEntity<>(new CustomApiResponse<>(message, turnos, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok(message, turnos), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener turno por ID", description = "Devuelve un turno específico basado en su ID")
@@ -62,12 +62,12 @@ public class TurnoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<TurnoGetDTO>> findById(
+    public ResponseEntity<ApiRespons<TurnoGetDTO>> findById(
             @Parameter(description = "ID del turno a buscar", example = "1", required = true)
             @PathVariable Integer id) {
         return turnoService.findById(id)
-                .map(turno -> new ResponseEntity<>(new CustomApiResponse<>("Turno encontrado", turno, true), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(new CustomApiResponse<>("Turno no encontrado", null, false), HttpStatus.NOT_FOUND));
+                .map(turno -> new ResponseEntity<>(ApiRespons.ok("Turno encontrado", turno), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ApiRespons.error("Turno no encontrado"), HttpStatus.NOT_FOUND));
     }
 
     @Operation(summary = "Actualizar turno existente", description = "Actualiza la información de un turno existente")
@@ -78,13 +78,13 @@ public class TurnoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<TurnoGetDTO>> update(
+    public ResponseEntity<ApiRespons<TurnoGetDTO>> update(
             @Parameter(description = "ID del turno a actualizar", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Datos actualizados del turno", required = true)
             @Valid @RequestBody TurnoUpdateDTO turnoUpdateDTO) {
         TurnoGetDTO dto = turnoService.update(id, turnoUpdateDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Turno actualizado exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Turno actualizado exitosamente", dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Eliminar turno", description = "Da de baja un turno del sistema")
@@ -94,10 +94,10 @@ public class TurnoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<TurnoGetDTO>> delete(
+    public ResponseEntity<ApiRespons<TurnoGetDTO>> delete(
             @Parameter(description = "ID del turno a eliminar", example = "1", required = true)
             @PathVariable Integer id) {
         TurnoGetDTO dto = turnoService.delete(id);
-        return new ResponseEntity<>(new CustomApiResponse<>("Turno dado de baja exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Turno dado de baja exitosamente", dto), HttpStatus.OK);
     }
 }

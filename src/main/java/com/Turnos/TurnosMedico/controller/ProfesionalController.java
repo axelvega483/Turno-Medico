@@ -5,7 +5,7 @@ import com.Turnos.TurnosMedico.DTO.Disponibilidad.DisponibilidadPostDTO;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalGetDTO;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalPostDTO;
 import com.Turnos.TurnosMedico.DTO.Profesional.ProfesionalUpdateDTO;
-import com.Turnos.TurnosMedico.Util.CustomApiResponse;
+import com.Turnos.TurnosMedico.Util.ApiRespons;
 import com.Turnos.TurnosMedico.Util.Dia;
 import com.Turnos.TurnosMedico.interfaz.IProfesional;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,11 +39,11 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<CustomApiResponse<ProfesionalGetDTO>> create(
+    public ResponseEntity<ApiRespons<ProfesionalGetDTO>> create(
             @Parameter(description = "Datos del profesional a crear", required = true)
             @Valid @RequestBody ProfesionalPostDTO profesionalPostDTO) {
         ProfesionalGetDTO dto = profesionalService.create(profesionalPostDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Profesional creado exitosamente", dto, true), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiRespons.ok("Profesional creado exitosamente", dto), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Listar todos los profesionales", description = "Devuelve una lista con todos los profesionales registrados")
@@ -53,10 +53,10 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public ResponseEntity<CustomApiResponse<List<ProfesionalGetDTO>>> findAll() {
+    public ResponseEntity<ApiRespons<List<ProfesionalGetDTO>>> findAll() {
         List<ProfesionalGetDTO> profesionales = profesionalService.findAll();
         String message = profesionales.isEmpty() ? "No hay profesionales registrados" : "Profesionales recuperados exitosamente";
-        return new ResponseEntity<>(new CustomApiResponse<>(message, profesionales, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok(message, profesionales), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener profesional por ID", description = "Devuelve un profesional específico basado en su ID")
@@ -66,12 +66,12 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ProfesionalGetDTO>> findById(
+    public ResponseEntity<ApiRespons<ProfesionalGetDTO>> findById(
             @Parameter(description = "ID del profesional a buscar", example = "1", required = true)
             @PathVariable Integer id) {
         return profesionalService.findById(id)
-                .map(profesional -> new ResponseEntity<>(new CustomApiResponse<>("Profesional encontrado", profesional, true), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(new CustomApiResponse<>("Profesional no encontrado", null, false), HttpStatus.NOT_FOUND));
+                .map(profesional -> new ResponseEntity<>(new ApiRespons<>("Profesional encontrado", profesional, true), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ApiRespons.ok("Profesional no encontrado", null), HttpStatus.NOT_FOUND));
     }
 
     @Operation(summary = "Actualizar profesional existente", description = "Actualiza la información de un profesional existente")
@@ -82,13 +82,13 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ProfesionalGetDTO>> update(
+    public ResponseEntity<ApiRespons<ProfesionalGetDTO>> update(
             @Parameter(description = "ID del profesional a actualizar", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Datos actualizados del profesional", required = true)
             @Valid @RequestBody ProfesionalUpdateDTO updateDTO) {
         ProfesionalGetDTO dto = profesionalService.update(id, updateDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Profesional actualizado exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Profesional actualizado exitosamente", dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Eliminar profesional", description = "Da de baja un profesional del sistema")
@@ -98,11 +98,11 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ProfesionalGetDTO>> delete(
+    public ResponseEntity<ApiRespons<ProfesionalGetDTO>> delete(
             @Parameter(description = "ID del profesional a eliminar", example = "1", required = true)
             @PathVariable Integer id) {
         ProfesionalGetDTO dto = profesionalService.delete(id);
-        return new ResponseEntity<>(new CustomApiResponse<>("Profesional dado de baja exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Profesional dado de baja exitosamente", dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Verificar disponibilidad del profesional", description = "Verifica si un profesional está disponible en una fecha y hora específica")
@@ -112,7 +112,7 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}/disponibilidad")
-    public ResponseEntity<CustomApiResponse<Boolean>> verificarDisponibilidad(
+    public ResponseEntity<ApiRespons<Boolean>> verificarDisponibilidad(
             @Parameter(description = "ID del profesional", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Fecha y hora a verificar", example = "2024-01-15T10:00:00", required = true)
@@ -120,7 +120,7 @@ public class ProfesionalController {
 
         boolean disponible = profesionalService.estaDisponible(id, fechaHora);
         String mensaje = disponible ? "Profesional disponible" : "Profesional no disponible";
-        return new ResponseEntity<>(new CustomApiResponse<>(mensaje, disponible, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok(mensaje, disponible), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener disponibilidades por día", description = "Devuelve las disponibilidades de un profesional para un día específico")
@@ -130,14 +130,14 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}/disponibilidades")
-    public ResponseEntity<CustomApiResponse<List<DisponibilidadGetDTO>>> getDisponibilidadesPorDia(
+    public ResponseEntity<ApiRespons<List<DisponibilidadGetDTO>>> getDisponibilidadesPorDia(
             @Parameter(description = "ID del profesional", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Día de la semana", required = true)
             @RequestParam Dia dia) {
 
         List<DisponibilidadGetDTO> disponibilidades = profesionalService.getDisponibilidadesPorDia(id, dia);
-        return new ResponseEntity<>(new CustomApiResponse<>("Disponibilidades recuperadas", disponibilidades, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Disponibilidades recuperadas", disponibilidades), HttpStatus.OK);
     }
 
     @Operation(summary = "Agregar disponibilidad", description = "Agrega una nueva disponibilidad para un profesional")
@@ -148,7 +148,7 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping("/{id}/disponibilidades")
-    public ResponseEntity<CustomApiResponse<ProfesionalGetDTO>> agregarDisponibilidad(
+    public ResponseEntity<ApiRespons<ProfesionalGetDTO>> agregarDisponibilidad(
             @Parameter(description = "ID del profesional", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Datos de la disponibilidad a agregar", required = true)
@@ -161,7 +161,7 @@ public class ProfesionalController {
                 disponibilidadDTO.horarioInicio(),
                 disponibilidadDTO.horarioFin()
         );
-        return new ResponseEntity<>(new CustomApiResponse<>("Disponibilidad agregada exitosamente", profesional, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Disponibilidad agregada exitosamente", profesional), HttpStatus.OK);
     }
 
     @Operation(summary = "Remover disponibilidad", description = "Elimina una disponibilidad específica de un profesional")
@@ -171,7 +171,7 @@ public class ProfesionalController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}/disponibilidades")
-    public ResponseEntity<CustomApiResponse<ProfesionalGetDTO>> removerDisponibilidad(
+    public ResponseEntity<ApiRespons<ProfesionalGetDTO>> removerDisponibilidad(
             @Parameter(description = "ID del profesional", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "ID del consultorio", example = "1", required = true)
@@ -180,6 +180,6 @@ public class ProfesionalController {
             @RequestParam Dia dia) {
 
         ProfesionalGetDTO profesional = profesionalService.removerDisponibilidad(id, consultorioId, dia);
-        return new ResponseEntity<>(new CustomApiResponse<>("Disponibilidad removida exitosamente", profesional, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Disponibilidad removida exitosamente", profesional), HttpStatus.OK);
     }
 }

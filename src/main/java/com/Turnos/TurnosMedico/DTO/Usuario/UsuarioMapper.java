@@ -37,9 +37,6 @@ public class UsuarioMapper {
         if (update.nombre() != null) {
             usuario.setNombre(update.nombre());
         }
-        if (update.rol() != null) {
-            usuario.setRol(update.rol());
-        }
         if (update.password() != null) {
             usuario.setPassword(update.password());
         }

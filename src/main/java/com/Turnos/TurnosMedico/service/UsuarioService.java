@@ -1,13 +1,14 @@
 package com.Turnos.TurnosMedico.service;
 
-import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioGetDTO;
-import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioMapper;
-import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioPostDTO;
-import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioPutDTO;
+import com.Turnos.TurnosMedico.DTO.Usuario.*;
+import com.Turnos.TurnosMedico.Util.RolUsuario;
 import com.Turnos.TurnosMedico.interfaz.IUsuario;
 import com.Turnos.TurnosMedico.model.Usuario;
 import com.Turnos.TurnosMedico.repositroy.UsuarioRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,36 @@ public class UsuarioService implements IUsuario {
             usuario.setPassword(passwordEncoder.encode(put.password()));
         }
         repo.save(usuario);
+        return mapper.toDTO(usuario);
+    }
+
+    @Override
+    public UsuarioGetDTO actualizarRol(Integer id, UsuarioRolDTO dto) {
+        if (dto.rol() == null) {
+            throw new IllegalArgumentException("El rol es obligatorio");
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        Usuario usuarioLogueado = repo.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("Usuario autenticado no encontrado"));
+        if (usuarioLogueado.getId().equals(id)) {
+            throw new IllegalStateException("No podés cambiar tu propio rol");
+        }
+        Usuario usuario = repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        if (usuario.getRol() == RolUsuario.ADMIN && dto.rol() != RolUsuario.ADMIN) {
+            long admins = repo.countByRol(RolUsuario.ADMIN);
+            if (admins <= 1) {
+                throw new IllegalStateException("Debe existir al menos un ADMIN");
+            }
+        }
+
+        usuario.setRol(dto.rol());
+        repo.save(usuario);
+
         return mapper.toDTO(usuario);
     }
 

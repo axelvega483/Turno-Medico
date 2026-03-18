@@ -3,7 +3,7 @@ package com.Turnos.TurnosMedico.controller;
 import com.Turnos.TurnosMedico.DTO.Paciente.PacienteGetDTO;
 import com.Turnos.TurnosMedico.DTO.Paciente.PacientePostDTO;
 import com.Turnos.TurnosMedico.DTO.Paciente.PacienteUpdateDTO;
-import com.Turnos.TurnosMedico.Util.CustomApiResponse;
+import com.Turnos.TurnosMedico.Util.ApiRespons;
 import com.Turnos.TurnosMedico.interfaz.IPaciente;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,11 +34,11 @@ public class PacienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<CustomApiResponse<PacienteGetDTO>> create(
+    public ResponseEntity<ApiRespons<PacienteGetDTO>> create(
             @Parameter(description = "Datos del paciente a crear", required = true)
             @Valid @RequestBody PacientePostDTO pacientePostDTO) {
         PacienteGetDTO dto = pacienteService.create(pacientePostDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Paciente creado exitosamente", dto, true), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiRespons.ok("Paciente creado exitosamente", dto), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Listar todos los pacientes", description = "Devuelve una lista con todos los pacientes registrados")
@@ -48,10 +48,10 @@ public class PacienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public ResponseEntity<CustomApiResponse<List<PacienteGetDTO>>> findAll() {
+    public ResponseEntity<ApiRespons<List<PacienteGetDTO>>> findAll() {
         List<PacienteGetDTO> dto = pacienteService.findAll();
         String message = dto.isEmpty() ? "No hay pacientes registrados" : "Pacientes recuperados exitosamente";
-        return new ResponseEntity<>(new CustomApiResponse<>(message, dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok(message, dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener paciente por ID", description = "Devuelve un paciente específico basado en su ID")
@@ -61,12 +61,12 @@ public class PacienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<PacienteGetDTO>> findById(
+    public ResponseEntity<ApiRespons<PacienteGetDTO>> findById(
             @Parameter(description = "ID del paciente a buscar", example = "1", required = true)
             @PathVariable Integer id) {
         return pacienteService.findById(id)
-                .map(paciente -> new ResponseEntity<>(new CustomApiResponse<>("Paciente encontrado", paciente, true), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(new CustomApiResponse<>("Paciente no encontrado", null, false), HttpStatus.NOT_FOUND));
+                .map(paciente -> new ResponseEntity<>(new ApiRespons<>("Paciente encontrado", paciente, true), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ApiRespons.ok("Paciente no encontrado", null), HttpStatus.NOT_FOUND));
     }
 
     @Operation(summary = "Actualizar paciente existente", description = "Actualiza la información de un paciente existente")
@@ -77,13 +77,13 @@ public class PacienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<PacienteGetDTO>> update(
+    public ResponseEntity<ApiRespons<PacienteGetDTO>> update(
             @Parameter(description = "ID del paciente a actualizar", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Datos actualizados del paciente", required = true)
             @Valid @RequestBody PacienteUpdateDTO updateDTO) {
         PacienteGetDTO dto = pacienteService.update(id, updateDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Paciente actualizado exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Paciente actualizado exitosamente", dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Eliminar paciente", description = "Da de baja un paciente del sistema")
@@ -93,10 +93,10 @@ public class PacienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<PacienteGetDTO>> delete(
+    public ResponseEntity<ApiRespons<PacienteGetDTO>> delete(
             @Parameter(description = "ID del paciente a eliminar", example = "1", required = true)
             @PathVariable Integer id) {
         PacienteGetDTO dto = pacienteService.delete(id);
-        return new ResponseEntity<>(new CustomApiResponse<>("Paciente dado de baja exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Paciente dado de baja exitosamente", dto), HttpStatus.OK);
     }
 }

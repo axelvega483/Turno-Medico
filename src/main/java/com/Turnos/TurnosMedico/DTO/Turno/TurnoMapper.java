@@ -30,7 +30,8 @@ public class TurnoMapper {
                 turno.getEstado(),
                 turno.getTipoConsulta(),
                 turno.getFechaCreacion(),
-                turno.getFechaActualizacion()
+                turno.getFechaActualizacion(),
+                turno.getDuracion() != null ? turno.getDuracion().toMinutes(): null
 
         );
     }

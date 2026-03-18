@@ -17,5 +17,6 @@ public record TurnoGetDTO(
         EstadoTurno estado,
         TipoConsulta tipoConsulta,
         LocalDateTime fechaCreacion,
-        LocalDateTime fechaActualizacion) {
+        LocalDateTime fechaActualizacion,
+        Long duracion) {
 }

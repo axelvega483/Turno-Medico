@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,9 @@ public class TurnoService implements ITurno {
             validaciones(paciente, profesional, consultorio, especialidad);
             validarDisponibilidad(post, profesional, consultorio);
             Turno turno = mapper.toEntity(post, paciente, profesional, consultorio, especialidad);
+            if (turno.getDuracion() == null) {
+                turno.setDuracion(Duration.ofMinutes(30));
+            }
             Turno turnoSaved = repo.save(turno);
             return mapper.toDTO(turnoSaved);
         } catch (DataIntegrityViolationException e) {

@@ -4,6 +4,7 @@ package com.Turnos.TurnosMedico.interfaz;
 import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioGetDTO;
 import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioPostDTO;
 import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioPutDTO;
+import com.Turnos.TurnosMedico.DTO.Usuario.UsuarioRolDTO;
 import com.Turnos.TurnosMedico.model.Usuario;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface IUsuario {
     List<UsuarioGetDTO> listar();
 
     UsuarioGetDTO actualizar(Integer id, UsuarioPutDTO put);
+
+    UsuarioGetDTO actualizarRol(Integer id, UsuarioRolDTO put);
 
     UsuarioGetDTO eliminar(Integer id);
 

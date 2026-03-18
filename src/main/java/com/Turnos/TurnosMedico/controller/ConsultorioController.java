@@ -3,12 +3,12 @@ package com.Turnos.TurnosMedico.controller;
 import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioGetDTO;
 import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioPostDTO;
 import com.Turnos.TurnosMedico.DTO.Consultorio.ConsultorioUpdateDTO;
-import com.Turnos.TurnosMedico.Util.CustomApiResponse;
+import com.Turnos.TurnosMedico.Util.ApiRespons;
 import com.Turnos.TurnosMedico.interfaz.IConsultorio;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +34,11 @@ public class ConsultorioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<CustomApiResponse<ConsultorioGetDTO>> create(
+    public ResponseEntity<ApiRespons<ConsultorioGetDTO>> create(
             @Parameter(description = "Datos del consultorio a crear", required = true)
             @Valid @RequestBody ConsultorioPostDTO consultorioDTO) {
         ConsultorioGetDTO dto = consultorioService.create(consultorioDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Consultorio creado exitosamente", dto, true), HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiRespons.ok("Consultorio creado exitosamente", dto), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Listar todos los consultorios", description = "Devuelve una lista con todos los consultorios registrados")
@@ -48,10 +48,10 @@ public class ConsultorioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public ResponseEntity<CustomApiResponse<List<ConsultorioGetDTO>>> findAll() {
+    public ResponseEntity<ApiRespons<List<ConsultorioGetDTO>>> findAll() {
         List<ConsultorioGetDTO> consultorios = consultorioService.findAll();
         String message = consultorios.isEmpty() ? "No hay consultorios registrados" : "Consultorios recuperados exitosamente";
-        return new ResponseEntity<>(new CustomApiResponse<>(message, consultorios, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok(message, consultorios), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener consultorio por ID", description = "Devuelve un consultorio específico basado en su ID")
@@ -61,12 +61,12 @@ public class ConsultorioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ConsultorioGetDTO>> findById(
+    public ResponseEntity<ApiRespons<ConsultorioGetDTO>> findById(
             @Parameter(description = "ID del consultorio a buscar", example = "1", required = true)
             @PathVariable Integer id) {
         return consultorioService.findById(id)
-                .map(consultorio -> new ResponseEntity<>(new CustomApiResponse<>("Consultorio encontrado", consultorio, true), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(new CustomApiResponse<>("Consultorio no encontrado", null, false), HttpStatus.NOT_FOUND));
+                .map(consultorio -> new ResponseEntity<>(new ApiRespons<>("Consultorio encontrado", consultorio, true), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ApiRespons.ok("Consultorio no encontrado", null), HttpStatus.NOT_FOUND));
     }
 
     @Operation(summary = "Actualizar consultorio existente", description = "Actualiza la información de un consultorio existente")
@@ -77,13 +77,13 @@ public class ConsultorioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ConsultorioGetDTO>> update(
+    public ResponseEntity<ApiRespons<ConsultorioGetDTO>> update(
             @Parameter(description = "ID del consultorio a actualizar", example = "1", required = true)
             @PathVariable Integer id,
             @Parameter(description = "Datos actualizados del consultorio", required = true)
             @Valid @RequestBody ConsultorioUpdateDTO consultorioDTO) {
         ConsultorioGetDTO dto = consultorioService.update(id, consultorioDTO);
-        return new ResponseEntity<>(new CustomApiResponse<>("Consultorio actualizado exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Consultorio actualizado exitosamente", dto), HttpStatus.OK);
     }
 
     @Operation(summary = "Eliminar consultorio", description = "Da de baja un consultorio del sistema")
@@ -93,10 +93,10 @@ public class ConsultorioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomApiResponse<ConsultorioGetDTO>> delete(
+    public ResponseEntity<ApiRespons<ConsultorioGetDTO>> delete(
             @Parameter(description = "ID del consultorio a eliminar", example = "1", required = true)
             @PathVariable Integer id) {
         ConsultorioGetDTO dto = consultorioService.delete(id);
-        return new ResponseEntity<>(new CustomApiResponse<>("Consultorio dado de baja exitosamente", dto, true), HttpStatus.OK);
+        return new ResponseEntity<>(ApiRespons.ok("Consultorio dado de baja exitosamente", dto), HttpStatus.OK);
     }
 }

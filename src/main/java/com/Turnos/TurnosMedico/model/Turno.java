@@ -52,7 +52,7 @@ public class Turno implements Serializable {
     private Consultorio consultorio;
 
     @Column(name = "duracion", nullable = false)
-    private Duration duracion = Duration.ofMinutes(30);
+    private Duration duracion;
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
