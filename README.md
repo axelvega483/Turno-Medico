@@ -5,7 +5,7 @@
 <p align="center">
   <b>Sistema backend completo para administración integral de turnos médicos</b>
   <br>
-  <em>Desarrollado con Spring Boot • MySQL • OpenAPI 3</em>
+  <em>Desarrollado con Spring Boot • MySQL • Spring Security • JWT • OpenAPI 3</em>
 </p>
 
 <p align="center">
@@ -15,6 +15,8 @@
   <a href="http://localhost:8080/v3/api-docs">
     <img src="https://img.shields.io/badge/API-OpenAPI3-orange?style=for-the-badge&logo=openapi-initiative" alt="OpenAPI 3">
   </a>
+  <img src="https://img.shields.io/badge/Seguridad-JWT-black?style=for-the-badge&logo=jsonwebtokens" alt="JWT">
+  <img src="https://img.shields.io/badge/Spring_Security-6-brightgreen?style=for-the-badge&logo=springsecurity" alt="Spring Security">
   <img src="https://img.shields.io/badge/Java-17-blue?style=for-the-badge&logo=openjdk" alt="Java 17">
   <img src="https://img.shields.io/badge/Spring_Boot-3.4.5-brightgreen?style=for-the-badge&logo=springboot" alt="Spring Boot">
 </p>
@@ -27,13 +29,14 @@
 
 | Característica | Icono | Descripción |
 |----------------|-------|-------------|
-| **Gestión Inteligente de Turnos** | 📅 | Validación automática de disponibilidad de profesionales |
-| **Control de Estados** | 📊 | Seguimiento detallado de turnos (Pendiente, Confirmado, Atendido, Cancelado) |
-| **Confirmación y Anulación** | 🔄 | Actualización automática de disponibilidad |
-| **Relaciones Sólidas** | 🔗 | Entidades interconectadas: pacientes, profesionales, consultorios |
-| **Validaciones Integradas** | ✅ | Modelo con mensajes personalizados y robustos |
-| **DTOs Personalizados** | 🎯 | Vistas específicas para diferentes respuestas |
-| **Prevención de Conflictos** | 🛡️ | Constraints de BD para evitar superposición de turnos |
+| Gestión Inteligente de Turnos | 📅 | Validación automática de disponibilidad de profesionales |
+| Control de Estados | 📊 | Turnos con estados: Pendiente, Confirmado, Atendido y Cancelado |
+| Confirmación y Anulación | 🔄 | Actualización automática de disponibilidad |
+| Relaciones Sólidas | 🔗 | Pacientes, profesionales, consultorios y especialidades conectados |
+| DTOs Personalizados | 🎯 | Respuestas optimizadas para cada endpoint |
+| Prevención de Conflictos | 🛡️ | Constraints en BD para evitar superposición de turnos |
+| Autenticación Segura | 🔐 | Protección de endpoints con Spring Security y JWT |
+| Gestión de Usuarios | 👨‍💻 | Registro y autenticación de usuarios del sistema |
 
 </div>
 
@@ -43,50 +46,15 @@
 
 <div align="center">
 
-| Módulo | Icono | Descripción | Endpoints |
-|--------|-------|-------------|-----------|
-| **Pacientes** | 👤 | Gestión completa de pacientes | `GET/POST/PUT/DELETE /pacientes` |
-| **Profesionales** | 👨‍⚕️ | Administración de profesionales médicos | `GET/POST/PUT/DELETE /profesionales` |
-| **Turnos** | 📅 | Procesos de agendamiento y gestión | `GET/POST/PUT /turnos` |
-| **Consultorios** | 🏢 | Control de espacios físicos | `GET/POST/PUT/DELETE /consultorios` |
-| **Especialidades** | 🎯 | Catálogo de especialidades médicas | `GET/POST/PUT/DELETE /especialidades` |
-| **Obras Sociales** | 💼 | Gestión de obras sociales y planes | `GET/POST/PUT/DELETE /obras-sociales` |
-
-</div>
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-<div align="center">
-
-### Back-end (API REST)
-
-| Tecnología | Icono | Uso |
-|------------|-------|-----|
-| **Java 17** | <img src="https://img.shields.io/badge/Java-17-blue?style=flat&logo=openjdk" alt="Java 17"> | Lenguaje de programación principal |
-| **Spring Boot** | <img src="https://img.shields.io/badge/Spring_Boot-3.4.5-brightgreen?style=flat&logo=springboot" alt="Spring Boot"> | Framework principal de desarrollo |
-| **Spring Data JPA** | <img src="https://img.shields.io/badge/JPA-Hibernate-59666C?style=flat&logo=hibernate" alt="Spring Data JPA"> | Persistencia y mapeo ORM |
-| **MySQL** | <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql" alt="MySQL"> | Base de datos relacional |
-| **Bean Validation** | <img src="https://img.shields.io/badge/Validation-JSR380-orange?style=flat" alt="Bean Validation"> | Validación de datos y modelos |
-| **Maven** | <img src="https://img.shields.io/badge/Maven-C71A36?style=flat&logo=apache-maven" alt="Maven"> | Gestión de dependencias y build |
-
-</div>
-
----
-
-## 📝 Requerimientos Funcionales
-
-<div align="center">
-
-| Módulo | Funcionalidades | Estado |
-|--------|-----------------|--------|
-| **👤 Pacientes** | Registro completo • Historial de turnos • Validación de DNI • Obra social | ✅ Implementado |
-| **👨‍⚕️ Profesionales** | Gestión con matrícula única • Control de disponibilidad • Especialización • Consultorios múltiples | ✅ Implementado |
-| **📅 Turnos** | Agendamiento con validación • Múltiples estados • Tipos de consulta • Reagendamiento | ✅ Implementado |
-| **🏢 Consultorios** | Gestión de espacios físicos • Ubicación por piso • Asignación dinámica | ✅ Implementado |
-| **🎯 Especialidades** | Catálogo médico completo • Asociación con profesionales | ✅ Implementado |
-| **💼 Obras Sociales** | Administración de planes • Afiliación de pacientes | ✅ Implementado |
+| Módulo | Descripción |
+|--------|-------------|
+| 👨‍💻 Usuarios | Registro y autenticación de usuarios |
+| 👤 Pacientes | Gestión completa de pacientes |
+| 👨‍⚕️ Profesionales | Administración de profesionales médicos |
+| 📅 Turnos | Agendamiento y gestión de turnos |
+| 🏢 Consultorios | Control de espacios físicos |
+| 🎯 Especialidades | Catálogo de especialidades médicas |
+| 💼 Obras Sociales | Gestión de obras sociales |
 
 </div>
 
@@ -98,8 +66,8 @@
 
 | Recurso | Enlace | Descripción |
 |---------|--------|-------------|
-| **📖 Swagger UI** | [Swagger](http://localhost:8080/swagger-ui/index.html) | Documentación interactiva completa de la API |
-| **🔧 Endpoints** | Ver tabla de módulos | Lista completa de endpoints disponibles |
+| 📖 Swagger UI | http://localhost:8080/swagger-ui/index.html | Documentación interactiva de la API |
+| 📑 OpenAPI JSON | http://localhost:8080/v3/api-docs | Especificación completa de la API |
 
 </div>
 
@@ -111,11 +79,11 @@
 
 | Categoría | Especificación | Estado |
 |-----------|----------------|--------|
-| **🛡️ Validaciones** | Entidades con mensajes claros y personalizados | ✅ Implementado |
-| **📐 Modularidad** | Arquitectura escalable para futuras integraciones (web, mobile) | ✅ Implementado |
-| **💻 Código Limpio** | Principios SOLID y buenas prácticas de desarrollo | ✅ Implementado |
-| **🔒 Seguridad** | Validación de datos y relaciones consistentes | ✅ Implementado |
-| **📊 Performance** | Consultas optimizadas y gestión eficiente de recursos | ✅ Implementado |
+| 🔒 Seguridad | Autenticación JWT con Spring Security | ✅ Implementado |
+| 🛡️ Validaciones | Entidades con validaciones y mensajes claros | ✅ Implementado |
+| 📐 Arquitectura | Diseño en capas (Controller - Service - Repository) | ✅ Implementado |
+| 💻 Código Limpio | Buenas prácticas y principios SOLID | ✅ Implementado |
+| 📊 Performance | Consultas optimizadas y manejo eficiente de recursos | ✅ Implementado |
 
 </div>
 
@@ -123,13 +91,16 @@
 
 <div align="center">
 
-## 🚀 ¿Listo para Comenzar?
+## 🚀 ¿Listo para probar la API?
 
-[**📖 Ir a la Documentación Interactiva**](http://localhost:8080/swagger-ui/index.html) •
-
-**⭐ ¡No olvides darle una estrella al repo si te fue útil!**
+[**Abrir Swagger UI**](http://localhost:8080/swagger-ui/index.html)
 
 ---
-*Desarrollado con ❤️ usando Spring Boot y Java 17*
+
+⭐ Si este proyecto te resultó útil o te sirvió como referencia para aprender **Spring Security y JWT**, puedes darle una estrella al repositorio.
+
+---
+
+*Desarrollado con Spring Boot y Java 17*
 
 </div>
